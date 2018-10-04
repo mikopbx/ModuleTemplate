@@ -91,4 +91,67 @@ class ModuleTemplate extends ModelsBase {
 
 		return $result;
 	}
+
+	/**
+	 * После сохранения данных любой модели
+	 */
+	public function afterSave() {
+		parent::afterSave();
+		$this->processSettingsChanges( 'afterSave' );
+	}
+
+	/**
+	 * После удаления данных любой модели
+	 */
+	public function afterDelete() {
+		parent::afterDelete();
+		$this->processSettingsChanges( 'afterDelete' );
+	}
+
+	/**
+	 * Готовит массив действий для перезапуска модулей ядра системы
+	 * и Asterisk
+	 * Функция должна вернуть массив перезапускаемых модулей,см.
+	 * закомментированные строки ниже. Все варианты перезагрузок см. в
+	 * одноименном методе в классе ModelsBase
+	 *
+	 * @param $action string  быть afterSave или afterDelete
+	 */
+	private function processSettingsChanges( string $action ) {
+
+		$session = $this->getDI()->getSession();
+		if ( php_sapi_name() !== "cli" ) {
+			if ( $session->has( "configuration-has-changes" ) ) {
+				$previousArr = $session->get( "configuration-has-changes" );
+			} else {
+				$previousArr = [];
+			}
+
+			if ( ! $this->hasSnapshotData() ) {
+				return;
+			} // нечего менять
+
+			$changedFields = $this->getUpdatedFields();
+			if ( empty( $changedFields ) && $action == 'afterSave' ) {
+				return;
+			}
+			// $previousArr['ReloadManagers'] = TRUE;
+			// $previousArr['ReloadQueue'] = TRUE;
+			// $previousArr['ReloadDialplan'] = TRUE;
+			// $previousArr['UpdateCustomFiles'] = TRUE;
+			// $previousArr['ReloadSip']      = TRUE;
+			// $previousArr['ReloadFirewall'] = TRUE;
+			// $previousArr['ReloadIax'] = TRUE;
+			// $previousArr['ReloadNetwork'] = TRUE;
+			// $previousArr['ReloadSip']     = TRUE;
+			// $previousArr['ReloadFeatures'] = TRUE;
+			// $previousArr['ReloadManagers'] = TRUE;
+			// $previousArr['ReloadSSH'] = TRUE;
+			// $previousArr['ReloadNginx'] = TRUE;
+			// $previousArr['ReloadCron'] = TRUE;
+
+			$session->set( "configuration-has-changes", $previousArr );
+		}
+	}
+
 }
