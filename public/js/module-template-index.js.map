@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "sources": [
+    "src/module-template-index.js"
+  ],
+  "names": [],
+  "mappings": "AAAA",
+  "sourcesContent": [
+    "/*\n * Copyright (C) MIKO LLC - All Rights Reserved\n * Unauthorized copying of this file, via any medium is strictly prohibited\n * Proprietary and confidential\n * Written by Nikolay Beketov, 11 2018\n *\n */"
+  ],
+  "file": "module-template-index.js"
+}
