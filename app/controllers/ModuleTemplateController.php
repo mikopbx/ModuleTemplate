@@ -1,10 +1,9 @@
 <?php
 /**
- * Copyright (C) MIKO LLC - All Rights Reserved
+ * Copyright © MIKO LLC - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Nikolay Beketov, 9 2018
- *
+ * Written by Alexey Portnov, 11 2018
  */
 
 use Modules\ModuleTemplate\Models\ModuleTemplate;
@@ -32,7 +31,7 @@ class ModuleTemplateController extends BaseController {
 			$settings = new ModuleTemplate();
 		}
 
-		$this->view->form = new ModuleTemplateForm( $settings );
+		$this->view->form = new ModuleAutoprovisionForm( $settings );
 		$this->view->pick( "{$modulesDir}/ModuleTemplate/app/views/index" );
 	}
 
