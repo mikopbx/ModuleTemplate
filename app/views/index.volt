@@ -22,5 +22,12 @@
         <label>{{ t._('mod_tpl_Password') }}</label>
         {{ form.render('secret') }}
     </div>
+
+    <div class="field">
+        <div class="ui toggle checkbox">
+            {{ form.render('is_post') }}
+            <label>{{ t._('mod_tpl_NeedPostRequest') }}</label>
+        </div>
+    </div>
     {{ partial("partials/submitbutton",['indexurl':'pbx-extension-modules/index/']) }}
 </form>

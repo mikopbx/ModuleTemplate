@@ -53,6 +53,13 @@ class ModuleTemplate extends ModelsBase {
 	 */
 	public $database;
 
+	/**
+	 * Чекбокс
+	 *
+	 * @var integer
+	 */
+	public $is_post;
+
 
 	public function getSource() {
 		return 'm_ModuleModuleTemplate';

@@ -24,8 +24,10 @@ class ModuleTemplateController extends BaseController {
 		$modulesDir       = $this->getDI()->getModulesDir();
 		$footerCollection = $this->assets->collection( "footerJS" );
 		$footerCollection->addJs( 'js/pbx/main/form.js', TRUE );
-		$footerCollection->addJs( "{$modulesDir}/ModuleTemplate/public/js/module-template-index.js",
-			TRUE );
+		$footerCollection->addJs( "{$modulesDir}/ModuleTemplate/public/js/module-template-index.js", TRUE );
+		$headerCollectionCSS = $this->assets->collection( "headerCSS" );
+		$headerCollectionCSS->addCss( '{$modulesDir}/ModuleTemplate/public/css/module-template.css', TRUE );
+
 		$settings = ModuleTemplate::findFirst();
 		if ( $settings == FALSE ) {
 			$settings = new ModuleTemplate();
@@ -52,6 +54,12 @@ class ModuleTemplateController extends BaseController {
 		foreach ( $record as $key => $value ) {
 			switch ( $key ) {
 				case "id":
+					break;
+				case "is_post":
+					if (array_key_exists($key, $data))
+						$record->$key = ($data[$key]=='on') ? "1" : "0";
+					else
+						$record->$key = "0";
 					break;
 				default:
 					if ( ! array_key_exists( $key, $data ) ) {

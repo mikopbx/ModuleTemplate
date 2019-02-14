@@ -21,5 +21,14 @@ class ModuleTemplateForm extends Form {
 		$this->add( new Text( 'login' ) );
 		$this->add( new Password( 'secret' ) );
 		$this->add( new Text( 'database' ) );
+
+		// is_post
+		$cheskarr=array('value'=>null);
+		if ($entity->is_post) {
+			$cheskarr = array('checked' => 'checked','value'=>null);
+		}
+
+		$this->add(new Check('is_post',$cheskarr));
+
 	}
 }
