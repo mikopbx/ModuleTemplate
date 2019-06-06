@@ -7,7 +7,7 @@
  *
  */
 
-$messages = [
+return [
 	"repModuleTemplate"       => "Module template - %repesent%",
 	"mo_ModuleModuleTemplate" => "Module template",
 	"mod_tpl_NeedPostRequest" => "Send POST request",
