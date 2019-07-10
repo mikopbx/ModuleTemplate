@@ -21,7 +21,6 @@ class PbxExtensionSetup {
 	 * см (unInstallDB)
 	 *
 	 * Регистрирует модуль в PbxExtensionModules
-	 * Регистрирует модуль в PbxExtensionRelationship
 	 *
 	 * @return bool результат установки
 	 */
@@ -51,7 +50,6 @@ class PbxExtensionSetup {
 
 	/**
 	 * Удаляет запись о модуле из PbxExtensionModules
-	 * Удаляет запись о модуле из PbxExtensionRelationship
 	 * Удаляет свою модель
 	 *
 	 * @param  $keepSettings - оставляет таблицу с данными своей модели
