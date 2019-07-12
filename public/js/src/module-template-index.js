@@ -21,6 +21,7 @@ const ModuleTemplate = {
 		},
 	},
 	initialize() {
+		window.addEventListener('ModuleStatusChanged', moduleWebConsole.checkToggle);
 		ModuleTemplate.initializeForm();
 	},
 	/**

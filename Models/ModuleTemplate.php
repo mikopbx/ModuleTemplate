@@ -1,15 +1,15 @@
 <?php
 /**
- * Copyright (C) MIKO LLC - All Rights Reserved
+ * Copyright © MIKO LLC - All Rights Reserved
  * Unauthorized copying of this file, via any medium is strictly prohibited
  * Proprietary and confidential
- * Written by Nikolay Beketov, 9 2018
- *
+ * Written by Alexey Portnov, 2 2019
  */
 
 namespace Modules\ModuleTemplate\Models;
 
 use Models\ModelsBase;
+use Phalcon\Mvc\Model\Relation;
 
 class ModuleTemplate extends ModelsBase {
 
@@ -47,6 +47,13 @@ class ModuleTemplate extends ModelsBase {
 	public $secret;
 
 	/**
+	 * Резервный Extension, на которой пойдет звонок в случае сбой
+	 *
+	 * @var string
+	 */
+	public $failoverextension;
+
+	/**
 	 * Имя публикации
 	 *
 	 * @var string
@@ -54,20 +61,99 @@ class ModuleTemplate extends ModelsBase {
 	public $database;
 
 	/**
-	 * Чекбокс
+	 * Разрешенная длина для донабора
 	 *
-	 * @var integer
+	 * @var string
 	 */
-	public $is_post;
+	public $internalextensiontength;
 
+	/**
+	 * Занятый приложением внутренний номер доступный в списках выбора
+	 * @var string
+	 */
+	public $extension;
+
+	/**
+	 * JSON с объектами, в которых были ссылки на этот модуль
+	 * @return string
+	 */
+	public $redirection_settings;
 
 	public function getSource() {
-		return 'm_ModuleModuleTemplate';
+		return 'm_ModuleTemplate';
 	}
 
-	public function initialize() {
+	public function initialize() :void{
 		parent::initialize();
+		$this->belongsTo(
+			'failoverextension',
+			'Models\Extensions',
+			'number',
+			[
+				'alias'      => 'ExtensionsFailOver',
+				'foreignKey' => [
+					'allowNulls' => FALSE,
+					'action'     => Relation::NO_ACTION,
+				],
+			]
+		);
+		$this->belongsTo(
+			'extension',
+			'Models\Extensions',
+			'number',
+			[
+				'alias'      => 'Extensions',
+				'foreignKey' => [
+					'allowNulls' => FALSE,
+					'action'     => Relation::NO_ACTION
+					//SmartIVR удаляем через его Extension
+				],
+			]
+		);
+	}
 
+	/**
+	 * Возвращает структуру подключаемых отношений модуля, которые динамически
+	 * подключаеют в ModelsBase при инициализации модуля
+	 *
+	 * При описании отношений необходимо в foreignKey секцию добавлять атрибут
+	 * message в котором указывать алиас после слова Models,
+	 * например Models\IvrMenuTimeout, иначе метод getRelated не сможет найти зависимые
+	 * записи в моделях
+	 */
+	public static function getDynamicRelations($calledClass) :array{
+		$result = [];
+		if ($calledClass === "Models\Extensions"){
+			$result =[
+				'hasOne'=>[
+					'number',
+					'Modules\ModuleTemplate\Models\ModuleTemplate',
+					'failoverextension',
+					[
+						'alias'=>'ModuleTemplateFailOver',
+						'foreignKey' => [
+							'allowNulls' => 0,
+							'message'    => 'Models\ModuleTemplateFailOver',
+							'action'     => Relation::ACTION_RESTRICT
+						]
+					]
+				],
+				'hasOne'=>[
+					'number',
+					'Modules\ModuleTemplate\Models\ModuleTemplate',
+					'extension',
+					[
+						'alias'=>'ModuleTemplate',
+						'foreignKey' => [
+							'allowNulls' => 0,
+							'message'    => 'Models\ModuleTemplate',
+							'action'     => Relation::ACTION_CASCADE
+						]
+					]
+				],
+			];
+		}
+		return $result;
 	}
 
 	/**
@@ -79,16 +165,16 @@ class ModuleTemplate extends ModelsBase {
 	 *
 	 * @return string
 	 */
-	public function getRepresent( $needLink = FALSE ) {
+	public function getRepresent( $needLink = FALSE ) :string{
 		if ( $this->id === NULL ) {
 			return $this->t( 'mo_NewElement' );
 		}
-		$name = $this->t( 'mo_ModuleModuleTemplate' );;
+		$name = $this->t( 'mo_ModuleTemplate' );;
 		if ( $needLink ) {
 			$url     = $this->getDI()->getUrl();
-			$link    = $url->get( '/admin-cabinet/module-template' );
+			$link    = $url->get( 'module-template' );
 			$linkLoc = $this->t( 'repLink' );
-			$result  = $this->t( 'repModuleModuleTemplate',
+			$result  = $this->t( 'repModuleTemplate',
 				[
 					'repesent' => "<a href='{$link}'>{$linkLoc}</a>",
 				] );
@@ -98,21 +184,4 @@ class ModuleTemplate extends ModelsBase {
 
 		return $result;
 	}
-
-	/**
-	 * После сохранения данных любой модели
-	 */
-	public function afterSave() {
-		parent::afterSave();
-		$this->processSettingsChanges( 'afterSave' );
-	}
-
-	/**
-	 * После удаления данных любой модели
-	 */
-	public function afterDelete() {
-		parent::afterDelete();
-		$this->processSettingsChanges( 'afterDelete' );
-	}
-
 }

@@ -22,6 +22,7 @@ var ModuleTemplate = {
   },
   initialize: function () {
     function initialize() {
+      window.addEventListener('ModuleStatusChanged', moduleWebConsole.checkToggle);
       ModuleTemplate.initializeForm();
     }
 
