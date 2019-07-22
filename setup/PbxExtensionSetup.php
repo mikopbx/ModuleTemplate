@@ -74,7 +74,7 @@ class PbxExtensionSetup extends PbxExtensionBase {
 			'iam_token'				=>'string',
 			'o_auth_token'			=>'string',
 		];
-		if (!$this->createSettingsTable($this->table_yandex, $tableStructure)){
+		if (!$this->createSettingsTable($this->table_another, $tableStructure)){
 			return false;
 		}
 
@@ -99,7 +99,7 @@ class PbxExtensionSetup extends PbxExtensionBase {
 			$data           = new Extensions();
 			$data->number   = $exten;
 			$data->type     = 'MODULES';
-			$data->callerid = 'Module Smart IVR';
+			$data->callerid = 'Module Template'; // Название модуля на английском если для него надо создавать Extension
 			$data->public_access = 0;
 			$data->show_in_phonebook = 1;
 			$result = $result && $data->save();

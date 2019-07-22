@@ -11,6 +11,7 @@
 /* global globalRootUrl,globalTranslate, Form, Config */
 var ModuleTemplate = {
   $formObj: $('#module-template-form'),
+  $statusToggle: $('#module-status-toggle'),
   validateRules: {
     login: {
       identifier: 'login',
@@ -22,11 +23,25 @@ var ModuleTemplate = {
   },
   initialize: function () {
     function initialize() {
-      window.addEventListener('ModuleStatusChanged', moduleWebConsole.checkToggle);
+      window.addEventListener('ModuleStatusChanged', ModuleTemplate.checkToggle);
+      ModuleTemplate.checkToggle();
       ModuleTemplate.initializeForm();
     }
 
     return initialize;
+  }(),
+
+  /**
+   * Отслеживание состояния переключателя статуса модуля
+   */
+  checkToggle: function () {
+    function checkToggle() {
+      if (ModuleTemplate.$statusToggle.checkbox('is checked')) {// Модуль включен
+      } else {// Модуль отключен
+        }
+    }
+
+    return checkToggle;
   }(),
 
   /**

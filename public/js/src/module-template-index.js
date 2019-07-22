@@ -9,6 +9,7 @@
 /* global globalRootUrl,globalTranslate, Form, Config */
 const ModuleTemplate = {
 	$formObj: $('#module-template-form'),
+	$statusToggle: $('#module-status-toggle'),
 	validateRules: {
 		login: {
 			identifier: 'login',
@@ -21,8 +22,19 @@ const ModuleTemplate = {
 		},
 	},
 	initialize() {
-		window.addEventListener('ModuleStatusChanged', moduleWebConsole.checkToggle);
+		window.addEventListener('ModuleStatusChanged', ModuleTemplate.checkToggle);
+		ModuleTemplate.checkToggle();
 		ModuleTemplate.initializeForm();
+	},
+	/**
+	 * Отслеживание состояния переключателя статуса модуля
+	 */
+	checkToggle() {
+		if (ModuleTemplate.$statusToggle.checkbox('is checked')) {
+			// Модуль включен
+		} else {
+			// Модуль отключен
+		}
 	},
 	/**
 	 * Применение настроек модуля после изменения данных формы
