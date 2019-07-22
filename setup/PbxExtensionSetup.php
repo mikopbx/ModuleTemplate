@@ -151,8 +151,7 @@ class PbxExtensionSetup extends PbxExtensionBase {
 		if($keepSettings === FALSE){
 			$result = $result &&
 				$this->dropSettingsTable($this->table_settings)
-				&& $this->dropSettingsTable($this->table_yandex)
-				&& $this->dropSettingsTable($this->table_crt)
+				&& $this->dropSettingsTable($this->table_another)
 				&& $this->unregisterModule();
 		} else {
 			$result = $result && $this->unregisterModule();
