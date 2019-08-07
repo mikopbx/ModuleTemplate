@@ -79,7 +79,7 @@ class ModuleTemplate extends ModelsBase {
 	 */
 	public $redirection_settings;
 
-	public function getSource() {
+	public function getSource() :string {
 		return 'm_ModuleTemplate';
 	}
 
@@ -169,7 +169,7 @@ class ModuleTemplate extends ModelsBase {
 		if ( $this->id === NULL ) {
 			return $this->t( 'mo_NewElement' );
 		}
-		$name = $this->t( 'mo_ModuleTemplate' );;
+		$name = $this->t( 'mo_ModuleTemplate' );
 		if ( $needLink ) {
 			$url     = $this->getDI()->getUrl();
 			$link    = $url->get( 'module-template' );
