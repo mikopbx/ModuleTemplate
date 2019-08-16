@@ -5,6 +5,13 @@
  * Proprietary and confidential
  * Written by Alexey Portnov, 2 2019
  */
+/*
+ * https://docs.phalconphp.com/3.4/ru-ru/db-models-metadata
+ *
+ */
+
+
+
 
 namespace Modules\ModuleTemplate\Models;
 
