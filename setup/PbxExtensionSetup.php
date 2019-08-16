@@ -6,6 +6,16 @@
  * Written by Alexey Portnov, 5 2019
  */
 
+/**
+ * TODO: Замениить все вхождения строки ModuleTemplate на ID нового модуля
+ * Также должна называться и папка вместо ModuleTemplate - ID нового модуля
+ *
+ * Переименовать и описать модели модуля, как минимум одна модель с именем класса
+ * аналогичным ID модуля
+ *
+ *
+ */
+
 namespace Modules\ModuleTemplate\setup;
 
 use Models\Extensions;
@@ -25,7 +35,7 @@ class PbxExtensionSetup extends PbxExtensionBase
     public function __construct()
     {
         $this->version         = '%ModuleVersion%'; // Меняется автоматом в TeamCity
-        $this->min_pbx_version = '7.3.1.1'; // Меняем руками если появляются явные зависимости от версии PBX
+        $this->min_pbx_version = '7.3.1.1'; // TODO:Меняем руками если появляются явные зависимости от версии PBX
         $this->module_uniqid   = 'ModuleTemplate';
         $this->developer       = 'MIKO';
         $this->support_email   = 'help@miko.ru';
@@ -43,6 +53,11 @@ class PbxExtensionSetup extends PbxExtensionBase
      */
     protected function installDB(): bool
     {
+
+        // TODO: Сначала описываем модели для хранениия,
+        // затем описываем структуру каждой модели и создаем таблицы хранения
+        // в общем случае достаточно одной таблицы с ID модуля и колонкой ID типа KEY
+
         $result = true;
 
         // Создаем структуру хранения настроек модуля
@@ -64,7 +79,7 @@ class PbxExtensionSetup extends PbxExtensionBase
             $result = $this->createSettingsTable($this->table_settings, $tableStructure);
         }
 
-        // Настройки авторизации в Яндексе
+        // Пример создания дополнительной таблицы
         $tableStructure = [
             'id'                 => 'key',
             'folder_id'          => 'string',
@@ -79,7 +94,7 @@ class PbxExtensionSetup extends PbxExtensionBase
         }
 
 
-        // Заполним начальные настройки
+        // Заполним начальные настройки после создания таблицы
         if ($result) {
             $this->db->begin();
             $result   = true;
@@ -100,7 +115,7 @@ class PbxExtensionSetup extends PbxExtensionBase
                 $data                    = new Extensions();
                 $data->number            = $exten;
                 $data->type              = 'MODULES';
-                $data->callerid          = 'Module Smart IVR';
+                $data->callerid          = 'ModuleTemplate';
                 $data->public_access     = 0;
                 $data->show_in_phonebook = 1;
                 $result                  = $result && $data->save();
