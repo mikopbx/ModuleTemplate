@@ -26,64 +26,54 @@ class ModuleTemplate extends ModelsBase {
 	public $id;
 
 	/**
-	 * Адрес сервера 1С
+	 * Text field example
 	 *
 	 * @var string
 	 */
-	public $server1chost;
+	public $text_field;
 
 	/**
-	 * Порт, где опубликован сервер 1С
+	 * TextArea field example
+	 *
+	 * @var string
+	 */
+	public $text_area_field;
+
+	/**
+	 * Password field example
+	 *
+	 * @var string
+	 */
+	public $password_field;
+
+	/**
+	 * Integer field example
 	 *
 	 * @var integer
 	 */
-	public $server1cport;
+	public $integer_field;
 
 	/**
-	 * Логин к вебсервису
+	 * CheckBox
+	 *
+	 * @var integer
+	 */
+	public $checkbox_field;
+
+	/**
+	 * Toggle
+	 *
+	 * @var integer
+	 */
+	public $toggle_field;
+
+	/**
+	 * Dropdown menu
 	 *
 	 * @var string
 	 */
-	public $login;
+	public $dropdown_field;
 
-	/**
-	 * Пароль к вебсервису
-	 *
-	 * @var string
-	 */
-	public $secret;
-
-	/**
-	 * Резервный Extension, на которой пойдет звонок в случае сбой
-	 *
-	 * @var string
-	 */
-	public $failoverextension;
-
-	/**
-	 * Имя публикации
-	 *
-	 * @var string
-	 */
-	public $database;
-
-	/**
-	 * Разрешенная длина для донабора
-	 *
-	 * @var string
-	 */
-	public $internalextensiontength;
-
-	/**
-	 * Занятый приложением внутренний номер доступный в списках выбора
-	 * @var string
-	 */
-	public $extension;
-
-	/**
-	 * JSON с объектами, в которых были ссылки на этот модуль
-	 * @return string
-	 */
 	public $redirection_settings;
 
 	public function getSource() :string {
@@ -92,28 +82,15 @@ class ModuleTemplate extends ModelsBase {
 
 	public function initialize() :void{
 		parent::initialize();
-		$this->belongsTo(
-			'failoverextension',
-			'Models\Extensions',
-			'number',
+		$this->hasOne(
+			'dropdown_field',
+			'Models\Providers',
+			'id',
 			[
-				'alias'      => 'ExtensionsFailOver',
+				'alias'      => 'Providers',
 				'foreignKey' => [
-					'allowNulls' => FALSE,
+					'allowNulls' => TRUE,
 					'action'     => Relation::NO_ACTION,
-				],
-			]
-		);
-		$this->belongsTo(
-			'extension',
-			'Models\Extensions',
-			'number',
-			[
-				'alias'      => 'Extensions',
-				'foreignKey' => [
-					'allowNulls' => FALSE,
-					'action'     => Relation::NO_ACTION
-					//SmartIVR удаляем через его Extension
 				],
 			]
 		);
@@ -130,31 +107,18 @@ class ModuleTemplate extends ModelsBase {
 	 */
 	public static function getDynamicRelations($calledClass) :array{
 		$result = [];
-		if ($calledClass === "Models\Extensions"){
+		if ($calledClass === "Models\Providers"){
 			$result =[
-				'hasOne'=>[
-					'number',
+				'belongsTo'=>[
+					'id',
 					'Modules\ModuleTemplate\Models\ModuleTemplate',
-					'failoverextension',
+					'dropdown_field',
 					[
-						'alias'=>'ModuleTemplateFailOver',
+						'alias'=>'ModuleTemplateProvider',
 						'foreignKey' => [
 							'allowNulls' => 0,
-							'message'    => 'Models\ModuleTemplateFailOver',
-							'action'     => Relation::ACTION_RESTRICT
-						]
-					]
-				],
-				'hasOne'=>[
-					'number',
-					'Modules\ModuleTemplate\Models\ModuleTemplate',
-					'extension',
-					[
-						'alias'=>'ModuleTemplate',
-						'foreignKey' => [
-							'allowNulls' => 0,
-							'message'    => 'Models\ModuleTemplate',
-							'action'     => Relation::ACTION_CASCADE
+							'message'    => 'Models\ModuleTemplateProvider',
+							'action'     => Relation::ACTION_RESTRICT // запретить удалять провайдера если есть ссылки в модуле
 						]
 					]
 				],

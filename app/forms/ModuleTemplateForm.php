@@ -11,24 +11,62 @@ use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Numeric;
 use Phalcon\Forms\Element\Password;
+use Phalcon\Forms\Element\Check;
+use Phalcon\Forms\Element\TextArea;
+use Phalcon\Forms\Element\Hidden;
+use Phalcon\Forms\Element\Select;
 
 
-class ModuleTemplateForm extends Form {
+class ModuleTemplateForm extends Form
+{
 
-	public function initialize( $entity = NULL, $options = NULL ) {
-		$this->add( new Text( 'server1chost' ) );
-		$this->add( new Numeric( 'server1cport' ) );
-		$this->add( new Text( 'login' ) );
-		$this->add( new Password( 'secret' ) );
-		$this->add( new Text( 'database' ) );
+    public function initialize($entity = null, $options = null) :void
+    {
 
-		// is_post
-		$cheskarr=array('value'=>null);
-		if ($entity->is_post) {
-			$cheskarr = array('checked' => 'checked','value'=>null);
-		}
+        // id
+        $this->add(new Hidden('id', ['value' => $entity->id]));
 
-		$this->add(new Check('is_post',$cheskarr));
+        // text_field
+        $this->add(new Text('text_field'));
 
-	}
+        // text_area_field
+        $rows = max(round(strlen($entity->text_area_field) / 95), 2);
+        $this->add(new TextArea('text_area_field', ['rows' => $rows]));
+
+        // password_field
+        $this->add(new Password('password_field'));
+
+        // integer_field
+        $this->add(new Numeric('integer_field', [
+            'maxlength'    => 2,
+            'style'        => 'width: 80px;',
+            'defaultValue' => 3,
+        ]));
+
+
+        // checkbox_field
+        $checkAr = ['value' => null];
+        if ($entity->checkbox_field) {
+            $checkAr = ['checked' => 'checked', 'value' => null];
+        }
+        $this->add(new Check('checkbox_field', $checkAr));
+
+        // toggle_field
+        $checkAr = ['value' => null];
+        if ($entity->toggle_field) {
+            $checkAr = ['checked' => 'checked', 'value' => null];
+        }
+        $this->add(new Check('toggle_field', $checkAr));
+
+        // dropdown_field
+        $providers = new Select('dropdown_field', $options['providers'], [
+            'using'    => [
+                'id',
+                'name',
+            ],
+            'useEmpty' => false,
+            'class'    => 'ui selection dropdown provider-select',
+        ]);
+        $this->add($providers);
+    }
 }

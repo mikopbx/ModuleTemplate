@@ -7,7 +7,7 @@
  */
 
 
-namespace Modules\ModuleSmartIVR\Models;
+namespace Modules\ModuleTemplate\Models;
 
 use Models\ModelsBase;
 use Phalcon\Mvc\Model\Relation;

@@ -8,7 +8,18 @@
  */
 
 return [
-	"repModuleTemplate"       => "Module template - %repesent%",
-	"mo_ModuleModuleTemplate" => "Module template",
-	"mod_tpl_NeedPostRequest" => "Send POST request",
+	'repModuleTemplate'       => 'Module template - %repesent%',
+	'mo_ModuleModuleTemplate' => 'Module template',
+    'BreadcrumbModuleTemplate'=> 'Template module',
+    'SubHeaderModuleTemplate' => 'Example to create own modules',
+    'mod_tpl_TextFieldLabel'        => 'Text field example',
+    'mod_tpl_TextAreaFieldLabel'    => 'TextArea field example',
+    'mod_tpl_PasswordFieldLabel'    => 'Password field example',
+    'mod_tpl_IntegerFieldLabel'     => 'Integer field example',
+    'mod_tpl_CheckBoxFieldLabel'    => 'CheckBox',
+    'mod_tpl_ToggleFieldLabel'      => 'Toggle',
+    'mod_tpl_DropDownFieldLabel'    => 'Dropdown menu',
+    'mod_tpl_ValidateValueIsEmpty'  => 'Check the field, it looks like empty',
+    'mod_tpl_Connected'             => 'Module connected',
+    'mod_tpl_Disconnected'          => 'Module disconnected',
 ];

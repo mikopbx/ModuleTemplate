@@ -19,15 +19,19 @@
 namespace Modules\ModuleTemplate\setup;
 
 use Models\Extensions;
+use Models\PbxSettings;
 use Modules\ModuleTemplate\Models\ModuleTemplate;
 use Modules\PbxExtensionBase;
+use Phalcon\Db\Adapter\Pdo\Sqlite;
 use Util;
+use Phalcon\Text;
 
 class PbxExtensionSetup extends PbxExtensionBase
 {
 
     private $table_settings = 'm_ModuleTemplate';
     private $table_another = 'm_ModuleTemplateAnother';
+    private $ownTemplateDB = 'm_ModuleTemplateOwnDatabaseTableName';
 
     /**
      * PbxExtensionSetup constructor.
@@ -62,17 +66,14 @@ class PbxExtensionSetup extends PbxExtensionBase
 
         // Создаем структуру хранения настроек модуля
         $tableStructure = [
-            'id'                      => 'key',
-            'server1chost'            => 'string',
-            'server1cport'            => 'string',
-            'login'                   => 'string',
-            'secret'                  => 'string',
-            'failoverextension'       => 'string',
-            'database'                => 'string',
-            'extension'               => 'string',
-            'internalextensiontength' => 'integer',
-            'redirection_settings'    => 'string',
-
+            'id'                     => 'key',
+            'text_field'             => 'string',
+            'text_area_field'        => 'string',
+            'password_field'         => 'string',
+            'integer_field'          => 'integer',
+            'checkbox_field'         => 'integer',
+            'toggle_field'           => 'integer',
+            'dropdown_field'         => 'string',
         ];
 
         if ($result) {
@@ -128,10 +129,39 @@ class PbxExtensionSetup extends PbxExtensionBase
                 Util::sys_log_msg('update_system_config', 'Error: Failed to update table the Extensions table.');
             }
         }
+
+
+        if ($result) {
+            $dbPath = "{$this->moduleDir}/db";
+            if ( ! mkdir($dbPath) && ! is_dir($dbPath)) {
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $dbPath));
+            }
+            $originalDB = $this->db;
+            $this->db = new Sqlite(['dbname' => "$dbPath/ownTemplateDB.db"]);
+
+            // Создаем структуру дополнительной базы данных модуля
+            $tableStructure = [
+                'id'           => 'key',
+                'call_id'      => 'string',
+                'uniq_id'      => 'string',
+                'linkedid'     => 'string',
+                'answer'       => 'integer',
+                'user_id'      => 'string',
+                'lead_id'      => 'string',
+            ];
+
+            $result =  $this->createSettingsTable($this->ownTemplateDB, $tableStructure);
+            // Возвращаем оригинальную базу данных
+            $this->db = $originalDB;
+        }
+
         // Регаем модуль в PBX Extensions
         if ($result) {
             $result = $this->registerNewModule();
         }
+
+        // Добавим отображение модуля в боковом меню
+        $this->addToSidebar();
 
         return $result;
     }
@@ -176,8 +206,7 @@ class PbxExtensionSetup extends PbxExtensionBase
         if ($keepSettings === false) {
             $result = $result &&
                 $this->dropSettingsTable($this->table_settings)
-                && $this->dropSettingsTable($this->table_yandex)
-                && $this->dropSettingsTable($this->table_crt)
+                && $this->dropSettingsTable($this->table_another)
                 && $this->unregisterModule();
         } else {
             $result = $result && $this->unregisterModule();
@@ -207,5 +236,29 @@ class PbxExtensionSetup extends PbxExtensionBase
     protected function activateLicense(): bool
     {
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    protected function addToSidebar(): bool
+    {
+            $menuSettings = "AdditionalMenuItem{$this->module_uniqid}";
+            $unCamelizedControllerName = Text::uncamelize($this->module_uniqid, '-');
+            $previousMenuSettings = PbxSettings::findFirstByKey($menuSettings);
+            if (!$previousMenuSettings){
+                $previousMenuSettings = new PbxSettings();
+                $previousMenuSettings->key = $menuSettings;
+            }
+            $value = [
+                'uniqid'=>$this->module_uniqid,
+                'href'=>$this->url->get( $unCamelizedControllerName ),
+                'group'=>'modules',
+                'iconClass'=>'puzzle piece',
+                'caption'=>$this->translation->_("Breadcrumb$this->module_uniqid"),
+                'showAtSidebar'=>true,
+            ];
+            $previousMenuSettings->value = json_encode($value);
+            $previousMenuSettings->save();
     }
 }

@@ -8,7 +8,18 @@
  */
 
 return [
-	"repModuleTemplate"       => "Модуль шаблон - %repesent%",
-	"mo_ModuleModuleTemplate" => "Модуль шаблон",
-	"mod_tpl_NeedPostRequest" => "Отправлять POST зарос",
+	'repModuleTemplate'         => 'Модуль шаблон - %repesent%',
+	'mo_ModuleModuleTemplate'   => 'Модуль шаблон',
+    'BreadcrumbModuleTemplate'  => 'Шаблонный модуль',
+    'SubHeaderModuleTemplate'   => 'Пример для создания собственных модулей',
+    'mod_tpl_TextFieldLabel'        => 'Пример текстового поля',
+    'mod_tpl_TextAreaFieldLabel'    => 'Пример многостраничного поля',
+    'mod_tpl_PasswordFieldLabel'    => 'Пример поля с паролем',
+    'mod_tpl_IntegerFieldLabel'     => 'Пример числового поля',
+    'mod_tpl_CheckBoxFieldLabel'    => 'Чекбокс',
+    'mod_tpl_ToggleFieldLabel'      => 'Переключатель',
+    'mod_tpl_DropDownFieldLabel'    => 'Выпадающее меню',
+    'mod_tpl_ValidateValueIsEmpty'  => 'Проверьте поле, оно не заполнено',
+    'mod_tpl_Connected'             => 'Модуль подключен',
+    'mod_tpl_Disconnected'          => 'Модуль отключен',
 ];

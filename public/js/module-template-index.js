@@ -11,22 +11,62 @@
 /* global globalRootUrl,globalTranslate, Form, Config */
 var ModuleTemplate = {
   $formObj: $('#module-template-form'),
+  $checkBoxes: $('#module-template-form .ui.checkbox'),
+  $dropDowns: $('#module-template-form .ui.dropdown'),
+  $disabilityFields: $('#module-template-form  .disability'),
+  $statusToggle: $('#module-status-toggle'),
+  $moduleStatus: $('#status'),
   validateRules: {
-    login: {
-      identifier: 'login',
+    textField: {
+      identifier: 'text_field',
       rules: [{
         type: 'empty',
-        prompt: globalTranslate.mod_ct_ValidateUrlEmpty
+        prompt: globalTranslate.mod_tplValidateValueIsEmpty
+      }]
+    },
+    areaField: {
+      identifier: 'text_area_field',
+      rules: [{
+        type: 'empty',
+        prompt: globalTranslate.mod_tplValidateValueIsEmpty
+      }]
+    },
+    passwordField: {
+      identifier: 'password_field',
+      rules: [{
+        type: 'empty',
+        prompt: globalTranslate.mod_tplValidateValueIsEmpty
       }]
     }
   },
   initialize: function () {
     function initialize() {
-      window.addEventListener('ModuleStatusChanged', moduleWebConsole.checkToggle);
+      // инициализируем чекбоксы и выподающие менюшки
+      ModuleTemplate.$checkBoxes.checkbox();
+      ModuleTemplate.$dropDowns.dropdown();
+      ModuleTemplate.checkStatusToggle();
+      window.addEventListener('ModuleStatusChanged', ModuleTemplate.checkStatusToggle);
       ModuleTemplate.initializeForm();
     }
 
     return initialize;
+  }(),
+
+  /**
+   * Изменение статуса кнопок при изменении статуса модуля
+   */
+  checkStatusToggle: function () {
+    function checkStatusToggle() {
+      if (ModuleTemplate.$statusToggle.checkbox('is checked')) {
+        ModuleTemplate.$disabilityFields.removeClass('disabled');
+        ModuleTemplate.$moduleStatus.show();
+      } else {
+        ModuleTemplate.$disabilityFields.addClass('disabled');
+        ModuleTemplate.$moduleStatus.hide();
+      }
+    }
+
+    return checkStatusToggle;
   }(),
 
   /**
@@ -46,9 +86,20 @@ var ModuleTemplate = {
           return successTest;
         }(),
         onSuccess: function () {
-          function onSuccess() {}
+          function onSuccess() {
+            ModuleTemplate.$moduleStatus.removeClass('grey').addClass('green');
+            ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Connected);
+          }
 
           return onSuccess;
+        }(),
+        onFailure: function () {
+          function onFailure() {
+            ModuleTemplate.$moduleStatus.removeClass('green').addClass('grey');
+            ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+          }
+
+          return onFailure;
         }()
       });
     }

@@ -7,22 +7,62 @@
  */
 
 /* global globalRootUrl,globalTranslate, Form, Config */
+
 const ModuleTemplate = {
 	$formObj: $('#module-template-form'),
+	$checkBoxes: $('#module-template-form .ui.checkbox'),
+	$dropDowns: $('#module-template-form .ui.dropdown'),
+	$disabilityFields: $('#module-template-form  .disability'),
+	$statusToggle: $('#module-status-toggle'),
+	$moduleStatus: $('#status'),
 	validateRules: {
-		login: {
-			identifier: 'login',
+		textField: {
+			identifier: 'text_field',
 			rules: [
 				{
 					type: 'empty',
-					prompt: globalTranslate.mod_ct_ValidateUrlEmpty,
+					prompt: globalTranslate.mod_tplValidateValueIsEmpty,
+				},
+			],
+		},
+		areaField: {
+			identifier: 'text_area_field',
+			rules: [
+				{
+					type: 'empty',
+					prompt: globalTranslate.mod_tplValidateValueIsEmpty,
+				},
+			],
+		},
+		passwordField: {
+			identifier: 'password_field',
+			rules: [
+				{
+					type: 'empty',
+					prompt: globalTranslate.mod_tplValidateValueIsEmpty,
 				},
 			],
 		},
 	},
 	initialize() {
-		window.addEventListener('ModuleStatusChanged', moduleWebConsole.checkToggle);
+		// инициализируем чекбоксы и выподающие менюшки
+		ModuleTemplate.$checkBoxes.checkbox();
+		ModuleTemplate.$dropDowns.dropdown();
+		ModuleTemplate.checkStatusToggle();
+		window.addEventListener('ModuleStatusChanged', ModuleTemplate.checkStatusToggle);
 		ModuleTemplate.initializeForm();
+	},
+	/**
+	 * Изменение статуса кнопок при изменении статуса модуля
+	 */
+	checkStatusToggle() {
+		if (ModuleTemplate.$statusToggle.checkbox('is checked')) {
+			ModuleTemplate.$disabilityFields.removeClass('disabled');
+			ModuleTemplate.$moduleStatus.show();
+		} else {
+			ModuleTemplate.$disabilityFields.addClass('disabled');
+			ModuleTemplate.$moduleStatus.hide();
+		}
 	},
 	/**
 	 * Применение настроек модуля после изменения данных формы
@@ -36,7 +76,12 @@ const ModuleTemplate = {
 				return Object.keys(response).length > 0 && response.result.toUpperCase() === 'SUCCESS';
 			},
 			onSuccess() {
-
+				ModuleTemplate.$moduleStatus.removeClass('grey').addClass('green');
+				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Connected);
+			},
+			onFailure() {
+				ModuleTemplate.$moduleStatus.removeClass('green').addClass('grey');
+				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
 			},
 		});
 	},

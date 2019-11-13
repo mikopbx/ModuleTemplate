@@ -7,81 +7,99 @@
  */
 
 use Modules\ModuleTemplate\Models\ModuleTemplate;
+use Models\Providers;
 
-class ModuleTemplateController extends BaseController {
+class ModuleTemplateController extends BaseController
+{
 
-	/**
-	 * Инициализация базового класса
-	 */
-	public function initialize() :void {
-		parent::initialize();
-	}
+    private $moduleDir;
 
-	/**
-	 * Форма настроек модуля
-	 */
-	public function indexAction() {
-		$modulesDir       = $this->getDI()->getModulesDir();
-		$footerCollection = $this->assets->collection( "footerJS" );
-		$footerCollection->addJs( 'js/pbx/main/form.js', TRUE );
-		$footerCollection->addJs( "{$modulesDir}/ModuleTemplate/public/js/module-template-index.js", TRUE );
-		$headerCollectionCSS = $this->assets->collection( "headerCSS" );
-		$headerCollectionCSS->addCss( '{$modulesDir}/ModuleTemplate/public/css/module-template.css', TRUE );
+    /**
+     * Basic initial class
+     */
+    public function initialize(): void
+    {
+        $modulesDir                = $this->getDI()->getModulesDir();
+        $this->moduleDir           = "{$modulesDir}/ModuleTemplate";
+        $this->view->logoImagePath = "{$this->url->get()}public/img/cache/ModuleTemplate/logo.png";
+        parent::initialize();
+    }
 
-		$settings = ModuleTemplate::findFirst();
-		if ( $settings == FALSE ) {
-			$settings = new ModuleTemplate();
-		}
+    /**
+     * Index page controller
+     */
+    public function indexAction(): void
+    {
+        $footerCollection = $this->assets->collection('footerJS');
+        $footerCollection->addJs('js/pbx/main/form.js', true);
+        $footerCollection->addJs("{$this->moduleDir}/public/js/module-template-index.js", true);
+        $headerCollectionCSS = $this->assets->collection('headerCSS');
+        $headerCollectionCSS->addCss("{$this->moduleDir}/public/css/module-template.css", true);
 
-		$this->view->form = new ModuleAutoprovisionForm( $settings );
-		$this->view->pick( "{$modulesDir}/ModuleTemplate/app/views/index" );
-	}
+        $settings = ModuleTemplate::findFirst();
+        if ($settings === false) {
+            $settings = new ModuleTemplate();
+        }
+        // Для примера добавим на форму меню провайдеров
+        $providers = Providers::find();
+        $providersList = [];
+        foreach ($providers as $provider){
+            $providersList[ $provider->uniqid ] = $provider->getRepresent();
+        }
+        $options['providers']=$providersList;
 
-	/**
-	 * Сохранение настроек
-	 */
-	public function saveAction() {
-		if ( ! $this->request->isPost() ) {
-			return;
-		}
-		$data   = $this->request->getPost();
-		$record = ModuleTemplate::findFirst();
+        $this->view->form = new ModuleTemplateForm($settings, $options);
+        $this->view->pick("{$this->moduleDir}/app/views/index");
+    }
 
-		if ( ! $record ) {
-			$record = new ModuleTemplate();
-		}
-		$this->db->begin();
-		foreach ( $record as $key => $value ) {
-			switch ( $key ) {
-				case "id":
-					break;
-				case "is_post":
-					if (array_key_exists($key, $data))
-						$record->$key = ($data[$key]=='on') ? "1" : "0";
-					else
-						$record->$key = "0";
-					break;
-				default:
-					if ( ! array_key_exists( $key, $data ) ) {
-						$record->$key = '';
-						continue;
-					}
-					$record->$key = $data[ $key ];
-			}
-		}
+    /**
+     * Save settings AJAX action
+     */
+    public function saveAction() :void
+    {
+        if ( ! $this->request->isPost()) {
+            return;
+        }
+        $data   = $this->request->getPost();
+        $record = ModuleTemplate::findFirst();
 
-		if ( $record->save() === FALSE ) {
-			$errors = $record->getMessages();
-			$this->flash->error( implode( '<br>', $errors ) );
-			$this->view->success = FALSE;
-			$this->db->rollback();
+        if ( ! $record) {
+            $record = new ModuleTemplate();
+        }
+        $this->db->begin();
+        foreach ($record as $key => $value) {
+            switch ($key) {
+                case 'id':
+                    break;
+                case 'checkbox_field':
+                case 'toggle_field':
+                    if (array_key_exists($key, $data)) {
+                        $record->$key = ($data[$key] === 'on') ? '1' : '0';
+                    } else {
+                        $record->$key = '0';
+                    }
+                    break;
+                default:
+                    if (array_key_exists($key, $data)) {
+                        $record->$key = $data[$key];
+                    } else {
+                        $record->$key = '';
+                    }
+            }
+        }
 
-			return;
-		}
+        if ($record->save() === FALSE) {
+            $errors = $record->getMessages();
+            $this->flash->error(implode('<br>', $errors));
+            $this->view->success = false;
+            $this->db->rollback();
 
-		$this->flash->success( $this->translation->_( 'ms_SuccessfulSaved' ) );
-		$this->view->success = FALSE;
-		$this->db->commit();
-	}
+            return;
+        }
+
+        $this->flash->success($this->translation->_('ms_SuccessfulSaved'));
+        $this->view->success = false;
+        $this->db->commit();
+    }
 
 }
