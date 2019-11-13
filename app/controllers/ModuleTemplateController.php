@@ -21,7 +21,7 @@ class ModuleTemplateController extends BaseController
     {
         $modulesDir                = $this->getDI()->getModulesDir();
         $this->moduleDir           = "{$modulesDir}/ModuleTemplate";
-        $this->view->logoImagePath = "{$this->url->get()}public/img/cache/ModuleTemplate/logo.png";
+        $this->view->logoImagePath = "{$this->url->get()}public/img/cache/ModuleTemplate/logo.svg";
         parent::initialize();
     }
 
