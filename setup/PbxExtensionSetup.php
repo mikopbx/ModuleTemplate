@@ -220,7 +220,7 @@ class PbxExtensionSetup extends PbxExtensionBase
                 'href'=>"/admin-cabinet/$unCamelizedControllerName",
                 'group'=>'modules',
                 'iconClass'=>'puzzle piece',
-                'caption'=>$this->translation->_("Breadcrumb$this->module_uniqid"),
+                'caption'=>"Breadcrumb$this->module_uniqid",
                 'showAtSidebar'=>true,
             ];
             $previousMenuSettings->value = json_encode($value);
