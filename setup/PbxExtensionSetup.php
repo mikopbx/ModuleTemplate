@@ -210,10 +210,10 @@ class PbxExtensionSetup extends PbxExtensionBase
     {
             $menuSettings = "AdditionalMenuItem{$this->module_uniqid}";
             $unCamelizedControllerName = Text::uncamelize($this->module_uniqid, '-');
-            $previousMenuSettings = PbxSettings::findFirstByKey($menuSettings);
-            if (!$previousMenuSettings){
-                $previousMenuSettings = new PbxSettings();
-                $previousMenuSettings->key = $menuSettings;
+            $menuSettings = PbxSettings::findFirstByKey($menuSettings);
+            if (!$menuSettings){
+                $menuSettings = new PbxSettings();
+                $menuSettings->key = $menuSettings;
             }
             $value = [
                 'uniqid'=>$this->module_uniqid,
@@ -223,7 +223,7 @@ class PbxExtensionSetup extends PbxExtensionBase
                 'caption'=>"Breadcrumb$this->module_uniqid",
                 'showAtSidebar'=>true,
             ];
-            $previousMenuSettings->value = json_encode($value);
-            $previousMenuSettings->save();
+            $menuSettings->value = json_encode($value);
+            return $menuSettings->save();
     }
 }
