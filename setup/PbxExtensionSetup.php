@@ -202,6 +202,8 @@ class PbxExtensionSetup extends PbxExtensionBase
     }
 
     /**
+     * Добавляет модуль в боковое меню
+     *
      * @return bool
      */
     protected function addToSidebar(): bool

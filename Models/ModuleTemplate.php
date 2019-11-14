@@ -74,8 +74,6 @@ class ModuleTemplate extends ModelsBase {
 	 */
 	public $dropdown_field;
 
-	public $redirection_settings;
-
 	public function getSource() :string {
 		return 'm_ModuleTemplate';
 	}
