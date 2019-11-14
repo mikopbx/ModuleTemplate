@@ -94,43 +94,6 @@ class PbxExtensionSetup extends PbxExtensionBase
             $result = $this->createSettingsTable($this->table_another, $tableStructure);
         }
 
-
-        // Заполним начальные настройки после создания таблицы
-        if ($result) {
-            $this->db->begin();
-            $result   = true;
-            $settings = ModuleTemplate::findFirst();
-            if ( ! $settings) {
-                $settings = new ModuleTemplate();
-            }
-            if (empty($settings->extension)) {
-                // Модуль был НЕ установлен ранее, ищем свободный exten.
-                $exten               = Extensions::getNextFreeApplicationNumber();
-                $settings->extension = $exten;
-                $result              = $settings->save();
-            }
-
-            $exten = $settings->extension;
-            $data  = Extensions::findFirst('number="' . $exten . '"');
-            if ( ! $data) {
-                $data                    = new Extensions();
-                $data->number            = $exten;
-                $data->type              = 'MODULES';
-                $data->callerid          = 'ModuleTemplate';
-                $data->public_access     = 0;
-                $data->show_in_phonebook = 1;
-                $result                  = $result && $data->save();
-            }
-
-            if ($result) {
-                $this->db->commit();
-            } else {
-                $this->db->rollback();
-                Util::sys_log_msg('update_system_config', 'Error: Failed to update table the Extensions table.');
-            }
-        }
-
-
         if ($result) {
             $dbPath = "{$this->moduleDir}/db";
             if ( ! mkdir($dbPath) && ! is_dir($dbPath)) {
@@ -252,7 +215,7 @@ class PbxExtensionSetup extends PbxExtensionBase
             }
             $value = [
                 'uniqid'=>$this->module_uniqid,
-                'href'=>$this->url->get( $unCamelizedControllerName ),
+                'href'=>"/admin-cabinet/$unCamelizedControllerName",
                 'group'=>'modules',
                 'iconClass'=>'puzzle piece',
                 'caption'=>$this->translation->_("Breadcrumb$this->module_uniqid"),
