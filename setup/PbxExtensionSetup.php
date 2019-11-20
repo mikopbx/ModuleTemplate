@@ -23,6 +23,7 @@ use Models\PbxSettings;
 use Modules\ModuleTemplate\Models\ModuleTemplate;
 use Modules\PbxExtensionBase;
 use Phalcon\Db\Adapter\Pdo\Sqlite;
+use Phalcon\Exception;
 use Util;
 use Phalcon\Text;
 
@@ -96,8 +97,8 @@ class PbxExtensionSetup extends PbxExtensionBase
 
         if ($result) {
             $dbPath = "{$this->moduleDir}/db";
-            if ( ! mkdir($dbPath) && ! is_dir($dbPath)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $dbPath));
+            if(!is_dir($dbPath) && !mkdir($dbPath, 0777, true) && !is_dir($dbPath)){
+                throw new Exception(sprintf('Directory "%s" was not created', $dbPath));
             }
             $originalDB = $this->db;
             $this->db = new Sqlite(['dbname' => "$dbPath/ownTemplateDB.db"]);
