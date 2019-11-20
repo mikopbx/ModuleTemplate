@@ -208,12 +208,12 @@ class PbxExtensionSetup extends PbxExtensionBase
      */
     protected function addToSidebar(): bool
     {
-            $menuSettings = "AdditionalMenuItem{$this->module_uniqid}";
+            $menuSettingsKey = "AdditionalMenuItem{$this->module_uniqid}";
             $unCamelizedControllerName = Text::uncamelize($this->module_uniqid, '-');
-            $menuSettings = PbxSettings::findFirstByKey($menuSettings);
+            $menuSettings = PbxSettings::findFirstByKey($menuSettingsKey);
             if (!$menuSettings){
                 $menuSettings = new PbxSettings();
-                $menuSettings->key = $menuSettings;
+                $menuSettings->key = $menuSettingsKey;
             }
             $value = [
                 'uniqid'=>$this->module_uniqid,
