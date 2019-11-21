@@ -22,6 +22,7 @@ class ModuleTemplateController extends BaseController
         $modulesDir                = $this->getDI()->getModulesDir();
         $this->moduleDir           = "{$modulesDir}/ModuleTemplate";
         $this->view->logoImagePath = "{$this->url->get()}public/img/cache/ModuleTemplate/logo.svg";
+        $this->view->submitMode = NULL; //Меняет представление кнопки сохранить на простое, без выпадающего списка
         parent::initialize();
     }
 
@@ -98,7 +99,7 @@ class ModuleTemplateController extends BaseController
         }
 
         $this->flash->success($this->translation->_('ms_SuccessfulSaved'));
-        $this->view->success = false;
+        $this->view->success = true;
         $this->db->commit();
     }
 
