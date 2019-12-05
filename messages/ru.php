@@ -22,4 +22,5 @@ return [
     'mod_tpl_ValidateValueIsEmpty'  => 'Проверьте поле, оно не заполнено',
     'mod_tpl_Connected'             => 'Модуль подключен',
     'mod_tpl_Disconnected'          => 'Модуль отключен',
+    'mod_tpl_UpdateStatus'          => 'Обновление статуса',
 ];

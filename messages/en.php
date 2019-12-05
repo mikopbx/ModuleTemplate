@@ -22,4 +22,5 @@ return [
     'mod_tpl_ValidateValueIsEmpty'  => 'Check the field, it looks like empty',
     'mod_tpl_Connected'             => 'Module connected',
     'mod_tpl_Disconnected'          => 'Module disconnected',
+    'mod_tpl_UpdateStatus'          => 'Update module status',
 ];

@@ -6,7 +6,7 @@
  *
  */
 
-/* global globalRootUrl,globalTranslate, Form, Config */
+/* global globalRootUrl, globalTranslate, Form, Config */
 
 const ModuleTemplate = {
 	$formObj: $('#module-template-form'),
@@ -15,6 +15,10 @@ const ModuleTemplate = {
 	$disabilityFields: $('#module-template-form  .disability'),
 	$statusToggle: $('#module-status-toggle'),
 	$moduleStatus: $('#status'),
+	/**
+	 * Правила валидации полей
+	 * https://semantic-ui.com/behaviors/form.html
+	 */
 	validateRules: {
 		textField: {
 			identifier: 'text_field',
@@ -44,6 +48,9 @@ const ModuleTemplate = {
 			],
 		},
 	},
+	/**
+	 * Инициализация класса, при открытии страницы
+	 */
 	initialize() {
 		// инициализируем чекбоксы и выподающие менюшки
 		ModuleTemplate.$checkBoxes.checkbox();
@@ -68,6 +75,7 @@ const ModuleTemplate = {
 	 * Применение настроек модуля после изменения данных формы
 	 */
 	applyConfigurationChanges() {
+		ModuleTemplate.changeStatus('Updating');
 		$.api({
 			url: `${Config.pbxUrl}/pbxcore/api/modules/ModuleTemplate/reload`,
 			on: 'now',
@@ -76,23 +84,32 @@ const ModuleTemplate = {
 				return Object.keys(response).length > 0 && response.result.toUpperCase() === 'SUCCESS';
 			},
 			onSuccess() {
-				ModuleTemplate.$moduleStatus.removeClass('grey').addClass('green');
-				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Connected);
+				ModuleTemplate.changeStatus('Connected');
 			},
 			onFailure() {
-				ModuleTemplate.$moduleStatus.removeClass('green').addClass('grey');
-				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+				ModuleTemplate.changeStatus('Disconnected');
 			},
 		});
 	},
+	/**
+	 * Действие перед отправкой формы на сервер
+	 * @param settings
+	 * @returns {*}
+	 */
 	cbBeforeSendForm(settings) {
 		const result = settings;
 		result.data = ModuleTemplate.$formObj.form('get values');
 		return result;
 	},
+	/**
+	 * Действие после сохранения настроек
+	 */
 	cbAfterSendForm() {
 		ModuleTemplate.applyConfigurationChanges();
 	},
+	/**
+	 * Инициализация формы при открытии
+	 */
 	initializeForm() {
 		Form.$formObj = ModuleTemplate.$formObj;
 		Form.url = `${globalRootUrl}module-template/save`;
@@ -100,6 +117,42 @@ const ModuleTemplate = {
 		Form.cbBeforeSendForm = ModuleTemplate.cbBeforeSendForm;
 		Form.cbAfterSendForm = ModuleTemplate.cbAfterSendForm;
 		Form.initialize();
+	},
+	/**
+	 * Обновление статуса модуля
+	 * @param status
+	 */
+	changeStatus(status) {
+		switch (status) {
+			case 'Connected':
+				ModuleTemplate.$moduleStatus
+					.removeClass('grey')
+					.removeClass('red')
+					.addClass('green');
+				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Connected);
+				break;
+			case 'Disconnected':
+				ModuleTemplate.$moduleStatus
+					.removeClass('green')
+					.removeClass('red')
+					.addClass('grey');
+				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+				break;
+			case 'Updating':
+				ModuleTemplate.$moduleStatus
+					.removeClass('green')
+					.removeClass('red')
+					.addClass('grey');
+				ModuleTemplate.$moduleStatus.html(`<i class="spinner loading icon"></i>${globalTranslate.mod_tpl_UpdateStatus}`);
+				break;
+			default:
+				ModuleTemplate.$moduleStatus
+					.removeClass('green')
+					.removeClass('red')
+					.addClass('grey');
+				ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+				break;
+		}
 	},
 };
 

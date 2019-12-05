@@ -1,4 +1,8 @@
 <form class="ui large grey segment form" id="module-template-form">
+    <div class="ui ribbon label">
+        <i class="phone icon"></i> 123456
+    </div>
+    <div class="ui grey top right attached label" id="status">{{ t._("mod_tpl_Disconnected") }}</div>
     {{ form.render('id') }}
 
     <div class="ten wide field disability">

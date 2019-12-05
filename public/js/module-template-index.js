@@ -8,7 +8,7 @@
  *
  */
 
-/* global globalRootUrl,globalTranslate, Form, Config */
+/* global globalRootUrl, globalTranslate, Form, Config */
 var ModuleTemplate = {
   $formObj: $('#module-template-form'),
   $checkBoxes: $('#module-template-form .ui.checkbox'),
@@ -16,6 +16,11 @@ var ModuleTemplate = {
   $disabilityFields: $('#module-template-form  .disability'),
   $statusToggle: $('#module-status-toggle'),
   $moduleStatus: $('#status'),
+
+  /**
+   * Правила валидации полей
+   * https://semantic-ui.com/behaviors/form.html
+   */
   validateRules: {
     textField: {
       identifier: 'text_field',
@@ -39,6 +44,10 @@ var ModuleTemplate = {
       }]
     }
   },
+
+  /**
+   * Инициализация класса, при открытии страницы
+   */
   initialize: function () {
     function initialize() {
       // инициализируем чекбоксы и выподающие менюшки
@@ -74,6 +83,7 @@ var ModuleTemplate = {
    */
   applyConfigurationChanges: function () {
     function applyConfigurationChanges() {
+      ModuleTemplate.changeStatus('Updating');
       $.api({
         url: "".concat(Config.pbxUrl, "/pbxcore/api/modules/ModuleTemplate/reload"),
         on: 'now',
@@ -87,16 +97,14 @@ var ModuleTemplate = {
         }(),
         onSuccess: function () {
           function onSuccess() {
-            ModuleTemplate.$moduleStatus.removeClass('grey').addClass('green');
-            ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Connected);
+            ModuleTemplate.changeStatus('Connected');
           }
 
           return onSuccess;
         }(),
         onFailure: function () {
           function onFailure() {
-            ModuleTemplate.$moduleStatus.removeClass('green').addClass('grey');
-            ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+            ModuleTemplate.changeStatus('Disconnected');
           }
 
           return onFailure;
@@ -106,6 +114,12 @@ var ModuleTemplate = {
 
     return applyConfigurationChanges;
   }(),
+
+  /**
+   * Действие перед отправкой формы на сервер
+   * @param settings
+   * @returns {*}
+   */
   cbBeforeSendForm: function () {
     function cbBeforeSendForm(settings) {
       var result = settings;
@@ -115,6 +129,10 @@ var ModuleTemplate = {
 
     return cbBeforeSendForm;
   }(),
+
+  /**
+   * Действие после сохранения настроек
+   */
   cbAfterSendForm: function () {
     function cbAfterSendForm() {
       ModuleTemplate.applyConfigurationChanges();
@@ -122,6 +140,10 @@ var ModuleTemplate = {
 
     return cbAfterSendForm;
   }(),
+
+  /**
+   * Инициализация формы при открытии
+   */
   initializeForm: function () {
     function initializeForm() {
       Form.$formObj = ModuleTemplate.$formObj;
@@ -133,6 +155,38 @@ var ModuleTemplate = {
     }
 
     return initializeForm;
+  }(),
+
+  /**
+   * Обновление статуса модуля
+   * @param status
+   */
+  changeStatus: function () {
+    function changeStatus(status) {
+      switch (status) {
+        case 'Connected':
+          ModuleTemplate.$moduleStatus.removeClass('grey').removeClass('red').addClass('green');
+          ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Connected);
+          break;
+
+        case 'Disconnected':
+          ModuleTemplate.$moduleStatus.removeClass('green').removeClass('red').addClass('grey');
+          ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+          break;
+
+        case 'Updating':
+          ModuleTemplate.$moduleStatus.removeClass('green').removeClass('red').addClass('grey');
+          ModuleTemplate.$moduleStatus.html("<i class=\"spinner loading icon\"></i>".concat(globalTranslate.mod_tpl_UpdateStatus));
+          break;
+
+        default:
+          ModuleTemplate.$moduleStatus.removeClass('green').removeClass('red').addClass('grey');
+          ModuleTemplate.$moduleStatus.html(globalTranslate.mod_tpl_Disconnected);
+          break;
+      }
+    }
+
+    return changeStatus;
   }()
 };
 $(document).ready(function () {
