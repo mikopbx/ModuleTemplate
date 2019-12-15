@@ -31,7 +31,7 @@ class PbxExtensionSetup extends PbxExtensionBase
     public function __construct()
     {
         $this->version         = '%ModuleVersion%'; // Меняется автоматом в TeamCity
-        $this->min_pbx_version = '2019.4.170'; // TODO:Меняем руками если появляются явные зависимости от версии PBX
+        $this->min_pbx_version = '2019.4.163'; // TODO:Меняем руками если появляются явные зависимости от версии PBX
         $this->module_uniqid   = 'ModuleTemplate';
         $this->developer       = 'MIKO';
         $this->support_email   = 'help@miko.ru';
