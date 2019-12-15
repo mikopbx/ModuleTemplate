@@ -18,29 +18,20 @@
 
 namespace Modules\ModuleTemplate\setup;
 
-use Models\Extensions;
 use Models\PbxSettings;
-use Modules\ModuleTemplate\Models\ModuleTemplate;
 use Modules\PbxExtensionBase;
-use Phalcon\Db\Adapter\Pdo\Sqlite;
-use Phalcon\Exception;
 use Util;
 use Phalcon\Text;
 
 class PbxExtensionSetup extends PbxExtensionBase
 {
-
-    private $table_settings = 'm_ModuleTemplate';
-    private $table_another = 'm_ModuleTemplateAnother';
-    private $ownTemplateDB = 'm_ModuleTemplateOwnDatabaseTableName';
-
     /**
      * PbxExtensionSetup constructor.
      */
     public function __construct()
     {
         $this->version         = '%ModuleVersion%'; // Меняется автоматом в TeamCity
-        $this->min_pbx_version = '7.3.1.1'; // TODO:Меняем руками если появляются явные зависимости от версии PBX
+        $this->min_pbx_version = '2019.4.170'; // TODO:Меняем руками если появляются явные зависимости от версии PBX
         $this->module_uniqid   = 'ModuleTemplate';
         $this->developer       = 'MIKO';
         $this->support_email   = 'help@miko.ru';
@@ -58,66 +49,8 @@ class PbxExtensionSetup extends PbxExtensionBase
      */
     protected function installDB(): bool
     {
-
-        // TODO: Сначала описываем модели для хранениия,
-        // затем описываем структуру каждой модели и создаем таблицы хранения
-        // в общем случае достаточно одной таблицы с ID модуля и колонкой ID типа KEY
-
-        $result = true;
-
-        // Создаем структуру хранения настроек модуля
-        $tableStructure = [
-            'id'                     => 'key',
-            'text_field'             => 'string',
-            'text_area_field'        => 'string',
-            'password_field'         => 'string',
-            'integer_field'          => 'integer',
-            'checkbox_field'         => 'integer',
-            'toggle_field'           => 'integer',
-            'dropdown_field'         => 'string',
-        ];
-
-        if ($result) {
-            $result = $this->createSettingsTable($this->table_settings, $tableStructure);
-        }
-
-        // Пример создания дополнительной таблицы
-        $tableStructure = [
-            'id'                 => 'key',
-            'folder_id'          => 'string',
-            'service_account_id' => 'string',
-            'key_data'           => 'string',
-            'key_id'             => 'string',
-            'iam_token'          => 'string',
-            'o_auth_token'       => 'string',
-        ];
-        if ($result) {
-            $result = $this->createSettingsTable($this->table_another, $tableStructure);
-        }
-
-        if ($result) {
-            $dbPath = "{$this->moduleDir}/db";
-            if(!is_dir($dbPath) && !mkdir($dbPath, 0777, true) && !is_dir($dbPath)){
-                throw new Exception(sprintf('Directory "%s" was not created', $dbPath));
-            }
-            $originalDB = $this->db;
-            $this->db = new Sqlite(['dbname' => "$dbPath/ownTemplateDB.db"]);
-
-            // Создаем структуру дополнительной базы данных модуля
-            $tableStructure = [
-                'id'           => 'key',
-                'call_id'      => 'string',
-                'uniq_id'      => 'string',
-                'linkedid'     => 'string',
-                'answer'       => 'integer',
-                'user_id'      => 'string',
-                'lead_id'      => 'string',
-            ];
-
-            $result =  $this->createSettingsTable($this->ownTemplateDB, $tableStructure);
-            // Возвращаем оригинальную базу данных
-            $this->db = $originalDB;
-        }
+        // Создаем базу данных
+        $result = $this->createSettingsTableByModelsAnnotations();
 
         // Регаем модуль в PBX Extensions
         if ($result) {
@@ -141,7 +74,7 @@ class PbxExtensionSetup extends PbxExtensionBase
         Util::mwexec("chmod +rx {$this->moduleDir}/agi-bin");
         Util::mwexec("chmod +x  {$this->moduleDir}/agi-bin/*");
 
-        return true;
+        return parent::installFiles();
     }
 
     /**
@@ -154,29 +87,12 @@ class PbxExtensionSetup extends PbxExtensionBase
      */
     protected function unInstallDB($keepSettings = false): bool
     {
-        $result = true;
+        // Чистим дополнительные записи, например записи в Extensions
+        // Потом вызываем родительский метод unInstallDB
+        // Если ничего дополнительного при установке не созадавали
+        // Можно удалить этот метод, автоматом будет вызываться родительский
 
-        if ($this->db->tableExists($this->table_settings)) {
-            /** @var \Modules\ModuleTemplate\Models\ModuleTemplate $settings */
-            $settings = ModuleTemplate::findFirst();
-            if ($settings) {
-                $data = Extensions::findFirst('number="' . $settings->extension . '"');
-                if ($data) {
-                    $result = $result && $data->delete();
-                }
-            }
-        }
-
-        if ($keepSettings === false) {
-            $result = $result &&
-                $this->dropSettingsTable($this->table_settings)
-                && $this->dropSettingsTable($this->table_another)
-                && $this->unregisterModule();
-        } else {
-            $result = $result && $this->unregisterModule();
-        }
-
-        return $result;
+        return parent::unInstallDB($keepSettings);
     }
 
     /**
@@ -184,12 +100,13 @@ class PbxExtensionSetup extends PbxExtensionBase
      * при необходимости
      *
      * @return bool результат удаления
+     * @throws \Phalcon\Exception
      */
     protected function unInstallFiles(): bool
     {
-        Util::mwexec("rm -rf {$this->moduleDir}");
+        // Если нужно прибить какие нибдуь процессы перед удалением, то описываем это здесь
 
-        return true;
+        return parent::unInstallFiles();
     }
 
     /**
@@ -203,7 +120,7 @@ class PbxExtensionSetup extends PbxExtensionBase
     }
 
     /**
-     * Добавляет модуль в боковое меню
+     * Добавляет модуль в боковое меню, можно переопределить родительскую функцию и заменить иконку
      *
      * @return bool
      */

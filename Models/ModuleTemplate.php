@@ -18,59 +18,61 @@ namespace Modules\ModuleTemplate\Models;
 use Models\ModelsBase;
 use Phalcon\Mvc\Model\Relation;
 
-class ModuleTemplate extends ModelsBase {
+class ModuleTemplate extends ModuleBaseClass {
 
-	/**
-	 * @var integer
-	 */
+    /**
+     * @Primary
+     * @Identity
+     * @Column(type="integer", nullable=false)
+     */
 	public $id;
 
 	/**
 	 * Text field example
 	 *
-	 * @var string
+	 * @Column(type="string", nullable=true)
 	 */
 	public $text_field;
 
 	/**
 	 * TextArea field example
 	 *
-	 * @var string
+	 * @Column(type="string", nullable=true)
 	 */
 	public $text_area_field;
 
 	/**
 	 * Password field example
 	 *
-	 * @var string
+	 * @Column(type="string", nullable=true)
 	 */
 	public $password_field;
 
 	/**
 	 * Integer field example
 	 *
-	 * @var integer
+	 * @Column(type="integer", default="1", nullable=true)
 	 */
 	public $integer_field;
 
 	/**
 	 * CheckBox
 	 *
-	 * @var integer
+	 * @Column(type="integer", default="1", nullable=true)
 	 */
 	public $checkbox_field;
 
 	/**
 	 * Toggle
 	 *
-	 * @var integer
+	 * @Column(type="integer", default="1", nullable=true)
 	 */
 	public $toggle_field;
 
 	/**
 	 * Dropdown menu
 	 *
-	 * @var string
+	 * @Column(type="string", nullable=true)
 	 */
 	public $dropdown_field;
 
@@ -125,32 +127,5 @@ class ModuleTemplate extends ModelsBase {
 		return $result;
 	}
 
-	/**
-	 * Возвращает предстваление элемента базы данных
-	 *  для сообщения об ошибках с ссылкой на элемент или для выбора в списках
-	 *  строкой
-	 *
-	 * @param bool $needLink - предстваление с ссылкой
-	 *
-	 * @return string
-	 */
-	public function getRepresent( $needLink = FALSE ) :string{
-		if ( $this->id === NULL ) {
-			return $this->t( 'mo_NewElement' );
-		}
-		$name = $this->t( 'mo_ModuleTemplate' );
-		if ( $needLink ) {
-			$url     = $this->getDI()->getUrl();
-			$link    = $url->get( 'module-template' );
-			$linkLoc = $this->t( 'repLink' );
-			$result  = $this->t( 'repModuleTemplate',
-				[
-					'repesent' => "<a href='{$link}'>{$linkLoc}</a>",
-				] );
-		} else {
-			$result = $name;
-		}
 
-		return $result;
-	}
 }

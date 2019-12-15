@@ -12,7 +12,13 @@ namespace Modules\ModuleTemplate\Models;
 use Models\ModelsBase;
 use Phalcon\Mvc\Model\Relation;
 
-class ModuleTemplateAnother extends ModelsBase{
+class ModuleTemplateAnother extends ModuleBaseClass
+{
+    /**
+     * @Primary
+     * @Identity
+     * @Column(type="integer", nullable=false)
+     */
     public $id;
     public $folder_id;
     public $service_account_id;
@@ -99,32 +105,4 @@ class ModuleTemplateAnother extends ModelsBase{
 		return $result;
 	}
 
-    /**
-	 * Возвращает предстваление элемента базы данных
-	 *  для сообщения об ошибках с ссылкой на элемент или для выбора в списках
-	 *  строкой
-	 *
-	 * @param bool $needLink - предстваление с ссылкой
-	 *
-	 * @return string
-	 */
-	public function getRepresent( $needLink = FALSE ) :string{
-		if ( $this->id === NULL ) {
-			return $this->t( 'mo_NewElement' );
-		}
-		$name = $this->t( 'mo_ModuleTemplate' );
-		if ( $needLink ) {
-			$url     = $this->getDI()->getUrl();
-			$link    = $url->get( 'module-template' );
-			$linkLoc = $this->t( 'repLink' );
-			$result  = $this->t( 'repModuleTemplate',
-				[
-					'repesent' => "<a href='{$link}'>{$linkLoc}</a>",
-				] );
-		} else {
-			$result = $name;
-		}
-
-		return $result;
-	}
 }
