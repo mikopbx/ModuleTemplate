@@ -2,14 +2,11 @@
 
 *Read this in other languages: [English](README.md), [Russian](README.ru.md).*
 
-
 ## Module description ##
 
 The template new extension for MikoPBX. The extension has web UI, with JS, CSS and PHP classes and database.
 
-
 ## Folder structure ##
-
 
 In folder **app** we place MVC part of project according to [Phalcon app Structure](https://docs.phalcon.io/3.4/en/tutorial-basic#file-structure)  
 

@@ -11,8 +11,6 @@
  */
 
 
-
-
 namespace Modules\ModuleTemplate\Models;
 
 use Models\ModelsBase;
