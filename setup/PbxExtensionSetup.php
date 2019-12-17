@@ -6,20 +6,11 @@
  * Written by Alexey Portnov, 5 2019
  */
 
-/**
- * TODO: Замениить все вхождения строки ModuleTemplate на ID нового модуля
- * Также должна называться и папка вместо ModuleTemplate - ID нового модуля
- *
- * Переименовать и описать модели модуля, как минимум одна модель с именем класса
- * аналогичным ID модуля
- *
- *
- */
-
 namespace Modules\ModuleTemplate\setup;
 
 use Models\PbxSettings;
 use Modules\PbxExtensionBase;
+use Modules\PbxExtensionInterface;
 use Util;
 use Phalcon\Text;
 
@@ -30,10 +21,10 @@ class PbxExtensionSetup extends PbxExtensionBase
      */
     public function __construct()
     {
-        $this->version         = '%ModuleVersion%'; // Меняется автоматом в TeamCity
-        $this->min_pbx_version = '2019.4.163'; // TODO:Меняем руками если появляются явные зависимости от версии PBX
-        $this->module_uniqid   = 'ModuleTemplate';
-        $this->developer       = 'MIKO';
+        $this->version         = '%ModuleVersion%'; // TODO: Change it to module version, or setup CI/DI to change it automatically
+        $this->min_pbx_version = '2019.4.163'; // TODO: Change IT to minimal PBX core version, depends to your extension
+        $this->module_uniqid   = 'ModuleTemplate'; // TODO: Сhange it to your module ID, i.e. MyCompanyMyNewModule4PBX
+        $this->developer       = 'MIKO'; // TODO: Change it on your Name or your company name
         $this->support_email   = 'help@miko.ru';
         parent::__construct();
     }
@@ -71,9 +62,6 @@ class PbxExtensionSetup extends PbxExtensionBase
     protected function installFiles(): bool
     {
         Util::mwexec("chmod +x {$this->moduleDir}/bin/*");
-        Util::mwexec("chmod +rx {$this->moduleDir}/agi-bin");
-        Util::mwexec("chmod +x  {$this->moduleDir}/agi-bin/*");
-
         return parent::installFiles();
     }
 
@@ -95,53 +83,4 @@ class PbxExtensionSetup extends PbxExtensionBase
         return parent::unInstallDB($keepSettings);
     }
 
-    /**
-     * Выполняет удаление своих файлов с остановной процессов
-     * при необходимости
-     *
-     * @return bool результат удаления
-     * @throws \Phalcon\Exception
-     */
-    protected function unInstallFiles(): bool
-    {
-        // Если нужно прибить какие нибдуь процессы перед удалением, то описываем это здесь
-
-        return parent::unInstallFiles();
-    }
-
-    /**
-     * Выполняет активацию триалов, проверку лицензионного клчюча
-     *
-     * @return bool результат активации лицензии
-     */
-    protected function activateLicense(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Добавляет модуль в боковое меню, можно переопределить родительскую функцию и заменить иконку
-     *
-     * @return bool
-     */
-    protected function addToSidebar(): bool
-    {
-            $menuSettingsKey = "AdditionalMenuItem{$this->module_uniqid}";
-            $unCamelizedControllerName = Text::uncamelize($this->module_uniqid, '-');
-            $menuSettings = PbxSettings::findFirstByKey($menuSettingsKey);
-            if (!$menuSettings){
-                $menuSettings = new PbxSettings();
-                $menuSettings->key = $menuSettingsKey;
-            }
-            $value = [
-                'uniqid'=>$this->module_uniqid,
-                'href'=>"/admin-cabinet/$unCamelizedControllerName",
-                'group'=>'modules',
-                'iconClass'=>'puzzle piece',
-                'caption'=>"Breadcrumb$this->module_uniqid",
-                'showAtSidebar'=>true,
-            ];
-            $menuSettings->value = json_encode($value);
-            return $menuSettings->save();
-    }
 }
