@@ -1,6 +1,6 @@
 # MikoPBX extension module template #
 
-*Read this in other languages: [English](README.md), [Russian](README.ru.md).*
+*Read this in other languages: [English](README.md), [Русский](README.ru.md).*
 
 ## Module description ##
 

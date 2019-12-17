@@ -1,6 +1,6 @@
 # Шаблон модуля расширения для MikoPBX #
 
-*Read this in other languages: [English](README.md), [Russian](README.ru.md).*
+*Read this in other languages: [English](README.md), [Русский](README.ru.md).*
 
 ## Описание модуля расширения ##
 
