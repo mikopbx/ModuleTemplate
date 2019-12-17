@@ -54,8 +54,8 @@ At every controller public method you must pick to module view file template
 
 ### Translations ###
 Your module have to has en.php with at least 2 translation phrases:
-	* Breadcrumb<ModuleUniqueID> - Your module name
-	* SubHeader<ModuleUniqueID> - Your module description for subheader
+* **Breadcrumb<ModuleUniqueID>** - Your module name
+* **SubHeader<ModuleUniqueID>** - Your module description for subheader
 	
 		
 ### Useful links ###
