@@ -61,14 +61,15 @@
 ### Полезные ссылки ###
 Для разработки модуля рекомендуется изучить документацию к таким проектам как:
 
-* [https://semantic-ui.com](Semntic UI)
-* [https://docs.phalcon.io/3.4/en/introduction](Phalcon PHP framework)
-* [https://wiki.asterisk.org/wiki/display/AST/Home](Asterisk Wiki)
+* [Semntic UI](https://semantic-ui.com)
+* [Phalcon PHP framework](https://docs.phalcon.io/3.4/en/introduction)
+* [MikoPBX Wiki](https://wiki.mikopbx.com)
+* [Asterisk Wiki](https://wiki.asterisk.org/wiki/display/AST/Home)
 
 При доработке интерфейса рекомендуем придерживаться стилей разработки:
 
-* [https://github.com/airbnb/javascript](Airbnb JavaScript Style Guide)
-* [https://www.php-fig.org/psr/psr-1/](PSR-1: Basic Coding Standard)
+* [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+* [PSR-1: Basic Coding Standard](https://www.php-fig.org/psr/psr-1/)
 
 ### Вопросы ###
 Подключайтесь к каналу для разрабочиков в telegram [@mikopbx_dev](https://t.me/joinchat/AAPn5xSqZIpQnNnCAa3bBw)
