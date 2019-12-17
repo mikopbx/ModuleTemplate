@@ -29,13 +29,13 @@ In folder **setup** we place install and uninstall classes, and additional firew
 ### Prepare template ###
 1. Make new repository and clone your's new one to Phpstorm project
 2. Make group rename in folder:
- * *ModuleTemplate* to new unique module ID, i.e. *MyCompanyMyNewModule4PBX*
- * *mod_tpl_* to *MyCompanyMod4PBX_tpl*
- * *module-template* to *my-company-module-4-pbx*
-3. Change filename of controller class in folder `app/controllers` from *ModuleTemplateController.php* to *MyCompanyMyNewModule4PBXController.php* 
-4. Change filename of form class in folder `app/forms` from *ModuleTemplateForm.php* to *MyCompanyMyNewModule4PBXForm.php* 
+ * `ModuleTemplate` to new unique module ID, i.e. `MyCompanyMyNewModule4PBX`
+ * `mod_tpl_` to `MyCompanyMod4PBX_tpl`
+ * `module-template` to `my-company-module-4-pbx`
+3. Change filename of controller class in folder `app/controllers` from `ModuleTemplateController.php` to `MyCompanyMyNewModule4PBXController.php` 
+4. Change filename of form class in folder `app/forms` from `ModuleTemplateForm.php` to `MyCompanyMyNewModule4PBXForm.php` 
 5. Rename and edit classes in `Models` folder for future database according to [Phalcon app Structure](https://docs.phalcon.io/3.4/en/db-models) and [Phalcon models annotations](https://docs.phalcon.io/3.4/en/db-models-metadata#annotations-strategy)
-6. Rename JS и CSS files in folder `public/src` from *my-company-module-4-pbx-index.js* to *my-company-module-4-pbx.css*
+6. Rename JS и CSS files in folder `public/src` from `my-company-module-4-pbx-index.js` to `my-company-module-4-pbx.css`
 7. If your future module has to open any firewall ports, describe it at `setup/FirewallRules.php` or just delete this file, if you don't need it.
 8. Modify `setup/PbxExtensionSetup.php`, change module unique ID, developer, version information and update/add function to correct install future module.
  

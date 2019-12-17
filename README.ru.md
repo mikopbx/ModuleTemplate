@@ -31,13 +31,13 @@
 Шаблон использует функцию gitHub - Template, поэтому первым делом создайте свой репозиторий.
 1. Склонируйте новой репозиторий в IDE, например в PhpStorm
 2. Выполните групповую замену:
- * *ModuleTemplate* на ваше название, например *MyCompanyMyNewModule4PBX*
- * *mod_tpl_* на *MyCompanyMod4PBX_tpl*
- * *module-template* на *my-company-module-4-pbx*
-3. Переименуйте файл контроллера в папке `app/controllers` с *ModuleTemplateController.php* на *MyCompanyMyNewModule4PBXController.php* 
-4. Переименуйте файл формы в папке `app/forms` с *ModuleTemplateForm.php* на *MyCompanyMyNewModule4PBXForm.php* 
+ * `ModuleTemplate` на ваше название, например `MyCompanyMyNewModule4PBX`
+ * `mod_tpl_` на `MyCompanyMod4PBX_tpl`
+ * `module-template` на `my-company-module-4-pbx`
+3. Переименуйте файл контроллера в папке `app/controllers` с `ModuleTemplateController.php` на `MyCompanyMyNewModule4PBXController.php` 
+4. Переименуйте файл формы в папке `app/forms` с `ModuleTemplateForm.php` на `MyCompanyMyNewModule4PBXForm.php` 
 5. Отредактируйте список файлов с описанием моделей, для хранения настроек модуля в папке `Models`
-6. Переименуйте JS и CSS файлы в папке `public/src` в *my-company-module-4-pbx-index.js* и *my-company-module-4-pbx.css*
+6. Переименуйте JS и CSS файлы в папке `public/src` в `my-company-module-4-pbx-index.js` и `my-company-module-4-pbx.css`
 7. Если для работы будущего модуля необходимо открывать дополнительные порты отредактируйте список портов в файле `setup/FirewallRules.php`, в противном случае удалите этот файл.
 8. Отредактируйте файл `setup/PbxExtensionSetup.php`, укажите номер версии, разработчика, минимальную версию PBX для установки модуля
  
