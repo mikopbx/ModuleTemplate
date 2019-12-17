@@ -1,3 +1,5 @@
+*Read this in other languages: [English](README.md), [Russian](README.ru.md).*
+
 ## Описание структуры модуля расширения ##
 
 Модуль расширения подключается из дополнительной папки после установки Askozia.
