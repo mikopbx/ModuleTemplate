@@ -14,7 +14,7 @@ You can use this template to make a new extension for MikoPBX. I contains a web 
 * **coreapi** folder  - for REST API classes
 * **db** folder - module database is created automatically within the installation process according to ORM Models annotations
 * **lib** folder  -  for main program classes
-Messages folder - for translation files, like ru.php, en.php ...
+* **messages** folder - for translation files, like ru.php, en.php ...
 * **Models**  folder - ORM models are described  compliance with the [Phalcon Models Structure](https://docs.phalcon.io/3.4/en/db-models)
 * **public** folder  - for public accessible files, i.e. js, css, images
 * **setup** folder - for installation and uninstallation classes, and additional firewall rules
