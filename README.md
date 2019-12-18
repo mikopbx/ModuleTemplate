@@ -4,27 +4,20 @@
 
 ## Module description ##
 
-The template new extension for MikoPBX. The extension has web UI, with JS, CSS and PHP classes and database.
+You can use this template to make a new extension for MikoPBX. I contains a web UI, with JS, CSS and PHP classes and database.
+
 
 ## Folder structure ##
 
-In folder **app** we place MVC part of project according to [Phalcon app Structure](https://docs.phalcon.io/3.4/en/tutorial-basic#file-structure)  
-
-In folder **bin** we place binary executable files
-
-In folder **coreapi** REST API classes
-
-In folder **db** takes place module database created automatically according to ORM Models annotations
-
-In folder **Lib** we place main program classes
-
-In folder **messages** we place translation files, like ru.php, en.php ...
-
-In folder **Models** we describe ORM models according to [Phalcon app Structure](https://docs.phalcon.io/3.4/en/db-models) 
-
-In folder **public** we place public accessible files, i.e. js, css, images  
-
-In folder **setup** we place install and uninstall classes, and additional firewall rules 
+* **app** folder -  for MVC part of project in compliance with the [Phalcon app Structure](https://docs.phalcon.io/3.4/en/tutorial-basic#file-structure)  
+* **bin** folder  - for binary executable files
+* **coreapi** folder  - for REST API classes
+* **db** folder - module database is created automatically within the installation process according to ORM Models annotations
+* **lib** folder  -  for main program classes
+Messages folder - for translation files, like ru.php, en.php ...
+* **Models**  folder - ORM models are described  compliance with the [Phalcon Models Structure](https://docs.phalcon.io/3.4/en/db-models)
+* **public** folder  - for public accessible files, i.e. js, css, images
+* **setup** folder - for installation and uninstallation classes, and additional firewall rules
 
 ### Prepare template ###
 1. Make new repository and clone your's new one to Phpstorm project. 
