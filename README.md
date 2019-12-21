@@ -20,6 +20,8 @@ You can use this template to make a new extension for MikoPBX. I contains a web 
 * **setup** folder - for installation and uninstallation classes, and additional firewall rules
 
 ### Prepare template ###
+You can use [this bash script](https://github.com/mikopbx/ExtensionsDevTools) to prepare your copy or you may follow the next steps:
+
 1. Make new repository and clone your new one to Phpstorm project. 
 2. Make group renaming in folder:
  * `ModuleTemplate` to new unique module ID, i.e. `MyCompanyMyNewModule4PBX`
