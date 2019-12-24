@@ -17,19 +17,6 @@ use Phalcon\Text;
 class PbxExtensionSetup extends PbxExtensionBase
 {
     /**
-     * PbxExtensionSetup constructor.
-     */
-    public function __construct()
-    {
-        $this->version         = '%ModuleVersion%'; // TODO: Change it to module version, or setup CI/DI to change it automatically
-        $this->min_pbx_version = '2019.4.163'; // TODO: Change IT to minimal PBX core version, depends to your extension
-        $this->module_uniqid   = 'ModuleTemplate'; // TODO: Сhange it to your module ID, i.e. MyCompanyMyNewModule4PBX
-        $this->developer       = 'MIKO'; // TODO: Change it on your Name or your company name
-        $this->support_email   = 'help@miko.ru';
-        parent::__construct();
-    }
-
-    /**
      * Создает структуру для хранения настроек модуля в своей модели
      * и заполняет настройки по-умолчанию если таблицы не было в системе
      * см (unInstallDB)
