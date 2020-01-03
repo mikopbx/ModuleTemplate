@@ -13,7 +13,6 @@
 
 namespace Modules\ModuleTemplate\Models;
 
-use Models\ModelsBase;
 use Phalcon\Mvc\Model\Relation;
 
 class ModuleTemplate extends ModuleBaseClass {

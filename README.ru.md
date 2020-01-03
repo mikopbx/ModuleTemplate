@@ -83,7 +83,7 @@
 
 При доработке интерфейса рекомендуем придерживаться стилей разработки:
 
-* [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
+* [Airbnb JavaScript Style Guide](https://github.com/leonidlebedev/javascript-airbnb)
 * [PSR-1: Basic Coding Standard](https://www.php-fig.org/psr/psr-1/)
 
 ### Вопросы ###

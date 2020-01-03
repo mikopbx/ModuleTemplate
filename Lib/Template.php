@@ -12,7 +12,7 @@ use ConfigClass;
 use System;
 use Util;
 
-class ModuleTemplate extends ConfigClass {
+class Template extends ConfigClass {
 
     private $module_name='ModuleTemplate';
     private $module_dir;
