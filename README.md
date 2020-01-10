@@ -41,7 +41,7 @@ from `my-company-module-4-pbx-index.js` to `my-company-module-4-pbx.css`
 
 7. If your future module has to open any firewall ports, describe it at `setup/FirewallRules.php` or just delete this file, if you don't need it.
 
-8. Modify `setup/PbxExtensionSetup.php`, change module unique ID, developer’s name, version information and update/add functions to install your future module correctly.
+8. Modify `module.json`, change module unique ID, developer’s name, version information and update/add functions to install your future module correctly.
 
  
 
