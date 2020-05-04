@@ -17,12 +17,12 @@ class ModuleTemplateAMI {
     private $url        = '';
 
     /**
-     * worker_ami_listener constructor.
+     * WorkerAmiListener constructor.
      * @throws \Exception
      */
     function __construct(){
-        $this->am     = Util::get_am();
-        $this->set_filter();
+        $this->am     = Util::getAstManager();
+        $this->setFilter();
 
         /** @var ModuleTemplate $settings */
         $settings = ModuleTemplate::findFirst();
@@ -42,7 +42,7 @@ class ModuleTemplateAMI {
             'linkedid' => $result['Linkedid'],
             'channel'  => $result['chan1c'],
         ];
-        $this->http_post_data($params);
+        $this->http_postData($params);
     }
 
     /**
@@ -50,7 +50,7 @@ class ModuleTemplateAMI {
      * @param      $value
      * @param bool $re_login
      */
-    private function http_post_data($value, $re_login = false){
+    private function http_postData($value, $re_login = false){
         if(empty($this->url)){
             return;
         }
@@ -84,7 +84,7 @@ class ModuleTemplateAMI {
         curl_close($curl);
 
         if($http_code !== 200){
-            Util::sys_log_msg('ModuleTemplateAMI_EXCEPTION', "http_code: '{$http_code}'; result_data: '$result_request'");
+            Util::sysLogMsg('ModuleTemplateAMI_EXCEPTION', "http_code: '{$http_code}'; result_data: '$result_request'");
         }
     }
 
@@ -110,14 +110,14 @@ class ModuleTemplateAMI {
      * Старт работы листнера.
      */
     public function start(){
-        $this->am->add_event_handler('userevent', [$this, 'callback']);
+        $this->am->addEventHandler('userevent', [$this, 'callback']);
         while (true) {
             $result = $this->am->wait_user_event(true);
             if($result === false){
                 // Нужен реконнект.
                 usleep(100000);
-                $this->am = Util::get_am();
-                $this->set_filter();
+                $this->am = Util::getAstManager();
+                $this->setFilter();
             }
         }
     }
@@ -126,12 +126,12 @@ class ModuleTemplateAMI {
      * Установка фильтра
      * @return array
      */
-    private function set_filter(){
+    private function setFilter(){
         $params   = ['Operation'=>'Add', 'Filter' => 'UserEvent: ModuleTemplateAMIPing'];
-        $this->am->send_request_timeout('Filter', $params);
+        $this->am->sendRequestTimeout('Filter', $params);
 
         $params   = ['Operation'=>'Add', 'Filter' => 'UserEvent: Interception'];
-        $res 	  = $this->am->send_request_timeout('Filter', $params);
+        $res 	  = $this->am->sendRequestTimeout('Filter', $params);
         return $res;
     }
 }

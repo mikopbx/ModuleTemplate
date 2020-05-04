@@ -19,6 +19,6 @@ if(count($argv)>1 && $argv[1] == 'start') {
         $listener = new ModuleTemplateAMI();
         $listener->start();
     }catch (Exception $e) {
-        Util::sys_log_msg("ModuleTemplate_EXCEPTION", $e->getMessage());
+        Util::sysLogMsg("ModuleTemplate_EXCEPTION", $e->getMessage());
     }
 }

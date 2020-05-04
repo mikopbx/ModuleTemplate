@@ -17,7 +17,7 @@ class ModuleBaseClass extends ModelsBase
      */
     public function initialize() :void
     {
-        // ConnectionService automated created by Class and DB name in /back-end/modules/DiServicesInstall.php
+        // ConnectionService automated created by Class and DB name in ModulesDBConnectionsProvider.php
         $this->setConnectionService('ModuleTemplate_module_db');
         parent::initialize();
     }

@@ -48,7 +48,7 @@ class PbxExtensionSetup extends PbxExtensionBase
      */
     protected function installFiles(): bool
     {
-        Util::mwexec("chmod +x {$this->moduleDir}/bin/*");
+        Util::mwExec("chmod +x {$this->moduleDir}/bin/*");
         return parent::installFiles();
     }
 

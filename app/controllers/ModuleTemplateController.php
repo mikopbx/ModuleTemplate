@@ -19,9 +19,9 @@ class ModuleTemplateController extends BaseController
      */
     public function initialize(): void
     {
-        $modulesDir                = $this->getDI()->getModulesDir();
+        $modulesDir                = $this->getDI()->config->path('core.modulesDir');
         $this->moduleDir           = "{$modulesDir}/ModuleTemplate";
-        $this->view->logoImagePath = "{$this->url->get()}public/img/cache/ModuleTemplate/logo.svg";
+        $this->view->logoImagePath = "{$this->url->get()}public/assets/img/cache/ModuleTemplate/logo.svg";
         $this->view->submitMode = NULL; //Меняет представление кнопки сохранить на простое, без выпадающего списка
         parent::initialize();
     }
@@ -33,12 +33,12 @@ class ModuleTemplateController extends BaseController
     {
         $footerCollection = $this->assets->collection('footerJS');
         $footerCollection->addJs('js/pbx/main/form.js', true);
-        $footerCollection->addJs("{$this->moduleDir}/public/js/module-template-index.js", true);
+        $footerCollection->addJs("{$this->moduleDir}/public/assets/js/module-template-index.js", true);
         $headerCollectionCSS = $this->assets->collection('headerCSS');
-        $headerCollectionCSS->addCss("{$this->moduleDir}/public/css/module-template.css", true);
+        $headerCollectionCSS->addCss("{$this->moduleDir}/public/assets/css/module-template.css", true);
 
         $settings = ModuleTemplate::findFirst();
-        if ($settings === false) {
+        if ($settings === null) {
             $settings = new ModuleTemplate();
         }
         // Для примера добавим на форму меню провайдеров
@@ -64,7 +64,7 @@ class ModuleTemplateController extends BaseController
         $data   = $this->request->getPost();
         $record = ModuleTemplate::findFirst();
 
-        if ( ! $record) {
+        if ($record===null) {
             $record = new ModuleTemplate();
         }
         $this->db->begin();

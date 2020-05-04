@@ -21,7 +21,7 @@ class Template extends ConfigClass {
      * Настройки для текущего класса.
      */
     public function getSettings(){
-        $modulesDir = $GLOBALS['g']['phalcon_settings']['application']['modulesDir'];
+        $modulesDir = $this->di->getConfig()->path('core.modulesDir');
         $this->module_dir   = $modulesDir.$this->module_name;
     }
 
@@ -29,7 +29,7 @@ class Template extends ConfigClass {
      * Добавление задач в crond.
      * @param $tasks
      */
-    public function create_cron_tasks(& $tasks){
+    public function createCronTasks(& $tasks){
         if(!is_array($tasks)){
             return;
         }
@@ -40,10 +40,10 @@ class Template extends ConfigClass {
     /**
      * Генерация конфига, рестарт работы модуля.
      */
-    public function reload_services(){
-        System::invoke_actions(['cron' => 0]);
+    public function reloadServices(){
+        System::invokeActions(['cron' => 0]);
         $path_to_safe = "{$this->module_dir}/bin/safe_script.php";
-        Util::mwexec("/usr/bin/php -f {$path_to_safe}");
+        Util::mwExec("/usr/bin/php -f {$path_to_safe}");
         return true;
     }
 }

@@ -47,7 +47,7 @@ from `my-company-module-4-pbx-index.js` to `my-company-module-4-pbx.css`
 
 ### File PbxExtensionSetup.php ###
 This file must have at least one `function __construct()`. \
-You can inherit the other function from parent class [PbxExtensionBase](https://github.com/mikopbx/core/blob/master/www/back-end/modules/PbxExtensionBase.php)
+You can inherit the other function from parent class [PbxExtensionBase](https://github.com/mikopbx/core/blob/master/www/src/modules/PbxExtensionBase.php)
   
 ### ORM Models classes ###
 You must use namespace like  `Modules\<ModuleUniqueID>\Models`.  Every file has to extend `ModuleBaseClass` 

@@ -57,7 +57,7 @@
 
 ### Установочный файл  PbxExtensionSetup.php ###
 Обязательно содержит следующие функцию **__construct()** в которой описваетсы идентификатор класса модуля, информация о разработчике и версиях PBX и текущего расширения.
-  Остальные функции наследуютмя из родительского класса [PbxExtensionBase](https://github.com/mikopbx/core/blob/master/www/back-end/modules/PbxExtensionBase.php) вы можете их переопределять при необходимости.
+  Остальные функции наследуютмя из родительского класса [PbxExtensionBase](https://github.com/mikopbx/core/blob/master/www/src/MikoPBX/Modules/PbxExtensionBase.php) вы можете их переопределять при необходимости.
   
 ### Классы модели ###
 Обазательно с namespace вида `Modules\<НазваниеКласса>\Models`, сама модель должна расширять класс **ModuleBaseClass** 
