@@ -12,7 +12,7 @@ require_once 'globals.php';
 
 use Exception;
 use \Modules\ModuleTemplate\Lib\ModuleTemplateAMI;
-use Util;
+use MikoPBX\Core\System\Util;
 
 if(count($argv)>1 && $argv[1] == 'start') {
     try{

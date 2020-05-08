@@ -11,7 +11,7 @@ namespace Modules\ModuleTemplate\setup;
 use Models\PbxSettings;
 use Modules\PbxExtensionBase;
 use Modules\PbxExtensionInterface;
-use Util;
+use MikoPBX\Core\System\Util;
 use Phalcon\Text;
 
 class PbxExtensionSetup extends PbxExtensionBase

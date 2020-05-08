@@ -11,62 +11,71 @@ namespace Modules\ModuleTemplate\bin;
 use Exception;
 use Models\PbxExtensionModules;
 use Phalcon\Di;
-use Util;
+use MikoPBX\Core\System\Util;
 
 require_once 'globals.php';
 
-class WorkerSafeScripts {
-    private $result  = false;
+class WorkerSafeScripts
+{
+    private $result = false;
     private $message = false;
     private $g;
 
     /**
      * WorkerSafeScripts constructor.
+     *
      * @param $g
+     *
      * @throws \Exception
      */
-    function __construct($g){
+    public function __construct($g)
+    {
         $this->g = &$g;
     }
 
-    public function callback($message) {
-        $this->result = true;
+    public function callback($message)
+    {
+        $this->result  = true;
         $this->message = $message;
     }
 
     /**
      * Проверка работы AMI листнера.
+     *
      * @param $name  - имя сервиса
      * @param $level - уровень рекурсии
      */
-    public function checkWorkerAMI($name, $level=0){
-        $res_ping = FALSE;
+    public function checkWorkerAMI($name, $level = 0)
+    {
+        $res_ping  = false;
         $WorkerPID = Util::getPidOfProcess($name);
-        if("$WorkerPID" != '') {
+        if ("$WorkerPID" != '') {
             // Сервис запущен. Выполним к нему пинг.
-            $am = Util::getAstManager();
+            $am       = Util::getAstManager();
             $res_ping = $am->pingAMIListner('ModuleTemplateAMI');
-            if (FALSE == $res_ping) {
+            if (false == $res_ping) {
                 // Пинг не прошел.
                 Util::sysLogMsg('ModuleTemplateAMI', 'Restart...');
             }
         }
 
-        if($res_ping == FALSE && $level<10){
+        if ($res_ping == false && $level < 10) {
             $this->startWorker($name);
             // Сервис не запущен.
             sleep(2);
             // Пытаемся снова запустить / проверить работу сервиса.
-            $this->checkWorkerAMI($name, $level+1);
+            $this->checkWorkerAMI($name, $level + 1);
         }
     }
 
     /**
      * Запуск рабочего процесса.
+     *
      * @param        $name
      */
-    private function startWorker($name){
-        Util::processWorker("$name","start", "$name", 'restart');
+    private function startWorker($name)
+    {
+        Util::processWorker("$name", "start", "$name", 'restart');
     }
 }
 

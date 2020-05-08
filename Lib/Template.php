@@ -9,8 +9,8 @@
 namespace Modules\ModuleTemplate\Lib;
 
 use ConfigClass;
-use System;
-use Util;
+use MikoPBX\Core\System\System;
+use MikoPBX\Core\System\Util;
 
 class Template extends ConfigClass {
 
