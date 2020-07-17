@@ -16,7 +16,7 @@ const ModuleTemplate = {
 	$statusToggle: $('#module-status-toggle'),
 	$moduleStatus: $('#status'),
 	/**
-	 * Правила валидации полей
+	 * Field validation rules
 	 * https://semantic-ui.com/behaviors/form.html
 	 */
 	validateRules: {
@@ -49,7 +49,7 @@ const ModuleTemplate = {
 		},
 	},
 	/**
-	 * Инициализация класса, при открытии страницы
+	 * On page load we init some Semantic UI library
 	 */
 	initialize() {
 		// инициализируем чекбоксы и выподающие менюшки
@@ -60,7 +60,7 @@ const ModuleTemplate = {
 		ModuleTemplate.initializeForm();
 	},
 	/**
-	 * Изменение статуса кнопок при изменении статуса модуля
+	 * Change some form elements classes depends of module status
 	 */
 	checkStatusToggle() {
 		if (ModuleTemplate.$statusToggle.checkbox('is checked')) {
@@ -72,7 +72,8 @@ const ModuleTemplate = {
 		}
 	},
 	/**
-	 * Применение настроек модуля после изменения данных формы
+	 * Send command to restart module workers after data changes,
+	 * Also we can do it on TemplateConf->modelsEventChangeData method
 	 */
 	applyConfigurationChanges() {
 		ModuleTemplate.changeStatus('Updating');
@@ -81,7 +82,7 @@ const ModuleTemplate = {
 			on: 'now',
 			successTest(response) {
 				// test whether a JSON response is valid
-				return Object.keys(response).length > 0 && response.result.toUpperCase() === 'SUCCESS';
+				return Object.keys(response).length > 0 && response.result === true;
 			},
 			onSuccess() {
 				ModuleTemplate.changeStatus('Connected');
@@ -92,7 +93,7 @@ const ModuleTemplate = {
 		});
 	},
 	/**
-	 * Действие перед отправкой формы на сервер
+	 * We can modify some data before form send
 	 * @param settings
 	 * @returns {*}
 	 */
@@ -102,13 +103,13 @@ const ModuleTemplate = {
 		return result;
 	},
 	/**
-	 * Действие после сохранения настроек
+	 * Some actions after forms send
 	 */
 	cbAfterSendForm() {
 		ModuleTemplate.applyConfigurationChanges();
 	},
 	/**
-	 * Инициализация формы при открытии
+	 * Initialize form parameters
 	 */
 	initializeForm() {
 		Form.$formObj = ModuleTemplate.$formObj;
@@ -119,7 +120,7 @@ const ModuleTemplate = {
 		Form.initialize();
 	},
 	/**
-	 * Обновление статуса модуля
+	 * Update the module state on form label
 	 * @param status
 	 */
 	changeStatus(status) {

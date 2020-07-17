@@ -13,9 +13,11 @@
 
 namespace Modules\ModuleTemplate\Models;
 
+use MikoPBX\Common\Models\Providers;
+use MikoPBX\Modules\Models\ModulesModelsBase;
 use Phalcon\Mvc\Model\Relation;
 
-class ModuleTemplate extends ModuleBaseClass {
+class ModuleTemplate extends ModulesModelsBase {
 
     /**
      * @Primary
@@ -73,15 +75,11 @@ class ModuleTemplate extends ModuleBaseClass {
 	 */
 	public $dropdown_field;
 
-	public function getSource() :string {
-		return 'm_ModuleTemplate';
-	}
-
 	public function initialize() :void{
-		parent::initialize();
+        $this->setSource('m_ModuleTemplate');
 		$this->hasOne(
 			'dropdown_field',
-			'Models\Providers',
+			Providers::class,
 			'id',
 			[
 				'alias'      => 'Providers',
@@ -91,24 +89,25 @@ class ModuleTemplate extends ModuleBaseClass {
 				],
 			]
 		);
+        parent::initialize();
 	}
 
 	/**
-	 * Возвращает структуру подключаемых отношений модуля, которые динамически
-	 * подключаеют в ModelsBase при инициализации модуля
-	 *
-	 * При описании отношений необходимо в foreignKey секцию добавлять атрибут
-	 * message в котором указывать алиас после слова Models,
-	 * например Models\IvrMenuTimeout, иначе метод getRelated не сможет найти зависимые
-	 * записи в моделях
-	 */
+     * Returns dynamic relations between module models and common models
+     * MikoPBX check it in ModelsBase after every call to keep data consistent
+     *
+     * There is example to describe the relation between Providers and ModuleTemplate models
+     *
+     * It is important to duplicate the relation alias on message field after Models\ word
+     *
+     */
 	public static function getDynamicRelations($calledClass) :array{
 		$result = [];
-		if ($calledClass === "Models\Providers"){
+		if ($calledClass === Providers::class){
 			$result =[
 				'belongsTo'=>[
 					'id',
-					'Modules\ModuleTemplate\Models\ModuleTemplate',
+					ModuleTemplate::class,
 					'dropdown_field',
 					[
 						'alias'=>'ModuleTemplateProvider',
