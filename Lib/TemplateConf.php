@@ -12,6 +12,7 @@ namespace Modules\ModuleTemplate\Lib;
 use MikoPBX\Common\Models\PbxSettings;
 use MikoPBX\Core\Workers\Cron\WorkerSafeScriptsCore;
 use MikoPBX\Modules\Config\ConfigClass;
+use MikoPBX\PBXCoreREST\Lib\PBXApiResult;
 
 class TemplateConf extends ConfigClass
 {
@@ -57,31 +58,28 @@ class TemplateConf extends ConfigClass
      *
      * @param array $request
      *
-     * @return array
+     * @return PBXApiResult
      */
-    public function moduleRestAPICallback(array $request): array
+    public function moduleRestAPICallback(array $request): PBXApiResult
     {
+        $res    = new PBXApiResult();
+        $res->processor = __METHOD__;
         $action = strtoupper($request['action']);
         switch ($action) {
             case 'CHECK':
-                $result                = null;
-                $templateMain          = new TemplateMain();
-                $result                = $templateMain->checkModuleWorkProperly();
-                $result_data['result'] = $result !== null;
-                $result_data['data']   = $result;
-
-                return $result_data;
-
+                $templateMain = new TemplateMain();
+                $res          = $templateMain->checkModuleWorkProperly();
+                break;
             case 'RELOAD':
                 $templateMain = new TemplateMain();
                 $templateMain->startAllServices(true);
-                $result['result'] = 'Success';
+                $res->success = true;
                 break;
             default:
-                $result['result'] = 'ERROR';
-                $result['data']   = 'API action not found in moduleRestAPICallback ModuleTemplate;';
+                $res->success    = false;
+                $res->messages[] = 'API action not found in moduleRestAPICallback ModuleTemplate';
         }
 
-        return $result;
+        return $res;
     }
 }

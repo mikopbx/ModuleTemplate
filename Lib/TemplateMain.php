@@ -7,6 +7,7 @@ use MikoPBX\Core\System\Util;
 use MikoPBX\Core\Workers\Cron\WorkerSafeScriptsCore;
 use MikoPBX\Modules\PbxExtensionBase;
 use MikoPBX\Modules\PbxExtensionUtils;
+use MikoPBX\PBXCoreREST\Lib\PBXApiResult;
 
 class TemplateMain extends PbxExtensionBase
 {
@@ -35,11 +36,14 @@ class TemplateMain extends PbxExtensionBase
     /**
      * Check something and answer over RestAPI
      *
-     * @return array|string[]
+     * @return PBXApiResult
      */
-    public function checkModuleWorkProperly(): array
+    public function checkModuleWorkProperly(): PBXApiResult
     {
-        return ['message' => 'everything is ok'];
+        $res = new PBXApiResult();
+        $res->processor = __METHOD__;
+        $res->success = true;
+        return $res;
     }
 
     /**
