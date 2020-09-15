@@ -3,14 +3,15 @@ namespace Modules\ModuleTemplate\Lib;
 
 use MikoPBX\Core\System\Util;
 use MikoPBX\Core\Workers\WorkerBase;
-use Exception;
+use MikoPBX\Core\Asterisk\AsteriskManager;
+use Error;
 
 require_once 'Globals.php';
 
 
 class WorkerTemplateAMI extends WorkerBase
 {
-    protected \AGI_AsteriskManager $am;
+    protected AsteriskManager $am;
     protected TemplateMain $templateMain;
 
     /**
@@ -80,7 +81,7 @@ if (isset($argv) && count($argv) > 1) {
     try {
         $worker = new $workerClassname();
         $worker->start($argv);
-    } catch (Exception $e) {
+    } catch (Error $e) {
         global $errorLogger;
         $errorLogger->captureException($e);
         Util::sysLogMsg("{$workerClassname}_EXCEPTION", $e->getMessage());
