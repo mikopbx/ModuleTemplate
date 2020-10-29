@@ -62,7 +62,7 @@ class TemplateMain extends PbxExtensionBase
 
         if ($restart) {
             foreach ($workersToRestart as $moduleWorker) {
-                Util::restartPHPWorker($moduleWorker['worker']);
+                Util::processPHPWorker($moduleWorker['worker']);
             }
         } else {
             $safeScript = new WorkerSafeScriptsCore();
