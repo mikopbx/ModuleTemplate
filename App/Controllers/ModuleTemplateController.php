@@ -5,13 +5,16 @@
  * Proprietary and confidential
  * Written by Alexey Portnov, 11 2018
  */
-
+namespace Modules\ModuleTemplate\App\Controllers;
+use MikoPBX\AdminCabinet\Controllers\BaseController;
+use MikoPBX\Modules\PbxExtensionUtils;
+use Modules\ModuleTemplate\App\Forms\ModuleTemplateForm;
 use Modules\ModuleTemplate\Models\ModuleTemplate;
-use Models\Providers;
+use MikoPBX\Common\Models\Providers;
 
 class ModuleTemplateController extends BaseController
 {
-
+    private $moduleUniqueID = 'ModuleTemplate';
     private $moduleDir;
 
     /**
@@ -19,10 +22,9 @@ class ModuleTemplateController extends BaseController
      */
     public function initialize(): void
     {
-        $modulesDir                = $this->getDI()->config->path('core.modulesDir');
-        $this->moduleDir           = "{$modulesDir}/ModuleTemplate";
-        $this->view->logoImagePath = "{$this->url->get()}public/assets/img/cache/ModuleTemplate/logo.svg";
-        $this->view->submitMode = NULL; //Меняет представление кнопки сохранить на простое, без выпадающего списка
+        $this->moduleDir           = PbxExtensionUtils::getModuleDir($this->moduleUniqueID);
+        $this->view->logoImagePath = "{$this->url->get()}assets/img/cache/{$this->moduleUniqueID}/logo.png";
+        $this->view->submitMode    = null;
         parent::initialize();
     }
 
@@ -31,17 +33,20 @@ class ModuleTemplateController extends BaseController
      */
     public function indexAction(): void
     {
+
         $footerCollection = $this->assets->collection('footerJS');
         $footerCollection->addJs('js/pbx/main/form.js', true);
-        $footerCollection->addJs("{$this->moduleDir}/public/assets/js/module-template-index.js", true);
+        $footerCollection->addJs("js/cache/{$this->moduleUniqueID}/module-template-index.js", true);
+
         $headerCollectionCSS = $this->assets->collection('headerCSS');
-        $headerCollectionCSS->addCss("{$this->moduleDir}/public/assets/css/module-template.css", true);
+        $headerCollectionCSS->addCss("css/cache/{$this->moduleUniqueID}/module-template.css", true);
 
         $settings = ModuleTemplate::findFirst();
         if ($settings === null) {
             $settings = new ModuleTemplate();
         }
-        // Для примера добавим на форму меню провайдеров
+
+        // For example we add providers list on the form
         $providers = Providers::find();
         $providersList = [];
         foreach ($providers as $provider){
@@ -50,7 +55,7 @@ class ModuleTemplateController extends BaseController
         $options['providers']=$providersList;
 
         $this->view->form = new ModuleTemplateForm($settings, $options);
-        $this->view->pick("{$this->moduleDir}/app/views/index");
+        $this->view->pick("{$this->moduleDir}/App/Views/index");
     }
 
     /**
@@ -64,7 +69,7 @@ class ModuleTemplateController extends BaseController
         $data   = $this->request->getPost();
         $record = ModuleTemplate::findFirst();
 
-        if ($record===null) {
+        if ($record === null) {
             $record = new ModuleTemplate();
         }
         $this->db->begin();

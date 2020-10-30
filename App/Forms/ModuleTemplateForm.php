@@ -6,6 +6,7 @@
  * Written by Nikolay Beketov, 9 2018
  *
  */
+namespace Modules\ModuleTemplate\App\Forms;
 
 use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;

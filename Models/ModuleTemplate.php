@@ -5,6 +5,7 @@
  * Proprietary and confidential
  * Written by Alexey Portnov, 2 2019
  */
+
 /*
  * https://docs.phalconphp.com/3.4/ru-ru/db-models-metadata
  *
@@ -13,116 +14,118 @@
 
 namespace Modules\ModuleTemplate\Models;
 
+use MikoPBX\Common\Models\Providers;
+use MikoPBX\Modules\Models\ModulesModelsBase;
 use Phalcon\Mvc\Model\Relation;
 
-class ModuleTemplate extends ModuleBaseClass {
+class ModuleTemplate extends ModulesModelsBase
+{
 
     /**
      * @Primary
      * @Identity
      * @Column(type="integer", nullable=false)
      */
-	public $id;
+    public $id;
 
-	/**
-	 * Text field example
-	 *
-	 * @Column(type="string", nullable=true)
-	 */
-	public $text_field;
+    /**
+     * Text field example
+     *
+     * @Column(type="string", nullable=true)
+     */
+    public $text_field;
 
-	/**
-	 * TextArea field example
-	 *
-	 * @Column(type="string", nullable=true)
-	 */
-	public $text_area_field;
+    /**
+     * TextArea field example
+     *
+     * @Column(type="string", nullable=true)
+     */
+    public $text_area_field;
 
-	/**
-	 * Password field example
-	 *
-	 * @Column(type="string", nullable=true)
-	 */
-	public $password_field;
+    /**
+     * Password field example
+     *
+     * @Column(type="string", nullable=true)
+     */
+    public $password_field;
 
-	/**
-	 * Integer field example
-	 *
-	 * @Column(type="integer", default="1", nullable=true)
-	 */
-	public $integer_field;
+    /**
+     * Integer field example
+     *
+     * @Column(type="integer", default="1", nullable=true)
+     */
+    public $integer_field;
 
-	/**
-	 * CheckBox
-	 *
-	 * @Column(type="integer", default="1", nullable=true)
-	 */
-	public $checkbox_field;
+    /**
+     * CheckBox
+     *
+     * @Column(type="integer", default="1", nullable=true)
+     */
+    public $checkbox_field;
 
-	/**
-	 * Toggle
-	 *
-	 * @Column(type="integer", default="1", nullable=true)
-	 */
-	public $toggle_field;
+    /**
+     * Toggle
+     *
+     * @Column(type="integer", default="1", nullable=true)
+     */
+    public $toggle_field;
 
-	/**
-	 * Dropdown menu
-	 *
-	 * @Column(type="string", nullable=true)
-	 */
-	public $dropdown_field;
+    /**
+     * Dropdown menu
+     *
+     * @Column(type="string", nullable=true)
+     */
+    public $dropdown_field;
 
-	public function getSource() :string {
-		return 'm_ModuleTemplate';
-	}
+    /**
+     * Returns dynamic relations between module models and common models
+     * MikoPBX check it in ModelsBase after every call to keep data consistent
+     *
+     * There is example to describe the relation between Providers and ModuleTemplate models
+     *
+     * It is important to duplicate the relation alias on message field after Models\ word
+     *
+     * @param $calledModelObject
+     *
+     * @return void
+     */
+    public static function getDynamicRelations(&$calledModelObject): void
+    {
+        if (is_a($calledModelObject, Providers::class)) {
+            $calledModelObject->belongsTo(
+                'id',
+                ModuleTemplate::class,
+                'dropdown_field',
+                [
+                    'alias'      => 'ModuleTemplateProvider',
+                    'foreignKey' => [
+                        'allowNulls' => 0,
+                        'message'    => 'Models\ModuleTemplateProvider',
+                        'action'     => Relation::ACTION_RESTRICT
+                        // запретить удалять провайдера если есть ссылки в модуле
+                    ],
+                ]
+            );
+        }
+    }
 
-	public function initialize() :void{
-		parent::initialize();
-		$this->hasOne(
-			'dropdown_field',
-			'Models\Providers',
-			'id',
-			[
-				'alias'      => 'Providers',
-				'foreignKey' => [
-					'allowNulls' => TRUE,
-					'action'     => Relation::NO_ACTION,
-				],
-			]
-		);
-	}
-
-	/**
-	 * Возвращает структуру подключаемых отношений модуля, которые динамически
-	 * подключаеют в ModelsBase при инициализации модуля
-	 *
-	 * При описании отношений необходимо в foreignKey секцию добавлять атрибут
-	 * message в котором указывать алиас после слова Models,
-	 * например Models\IvrMenuTimeout, иначе метод getRelated не сможет найти зависимые
-	 * записи в моделях
-	 */
-	public static function getDynamicRelations($calledClass) :array{
-		$result = [];
-		if ($calledClass === "Models\Providers"){
-			$result =[
-				'belongsTo'=>[
-					'id',
-					'Modules\ModuleTemplate\Models\ModuleTemplate',
-					'dropdown_field',
-					[
-						'alias'=>'ModuleTemplateProvider',
-						'foreignKey' => [
-							'allowNulls' => 0,
-							'message'    => 'Models\ModuleTemplateProvider',
-							'action'     => Relation::ACTION_RESTRICT // запретить удалять провайдера если есть ссылки в модуле
-						]
-					]
-				],
-			];
-		}
-		return $result;
-	}
+    public function initialize(): void
+    {
+        $this->setSource('m_ModuleTemplate');
+        $this->hasOne(
+            'dropdown_field',
+            Providers::class,
+            'id',
+            [
+                'alias'      => 'Providers',
+                'foreignKey' => [
+                    'allowNulls' => true,
+                    'action'     => Relation::NO_ACTION,
+                ],
+            ]
+        );
+        parent::initialize();
+    }
 
 
 }
