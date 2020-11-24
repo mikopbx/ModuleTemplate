@@ -3,6 +3,7 @@
 namespace Modules\ModuleTemplate\Lib;
 
 
+use MikoPBX\Core\System\Processes;
 use MikoPBX\Core\System\Util;
 use MikoPBX\Core\Workers\Cron\WorkerSafeScriptsCore;
 use MikoPBX\Modules\PbxExtensionBase;
@@ -62,7 +63,7 @@ class TemplateMain extends PbxExtensionBase
 
         if ($restart) {
             foreach ($workersToRestart as $moduleWorker) {
-                Util::processPHPWorker($moduleWorker['worker']);
+                Processes::processPHPWorker($moduleWorker['worker']);
             }
         } else {
             $safeScript = new WorkerSafeScriptsCore();
