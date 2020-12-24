@@ -1,12 +1,14 @@
-# Initial page
+---
+description: >-
+  You can use this template to make a new extension for MikoPBX. I contains a
+  web UI, with JS, CSS and PHP classes and database.
+---
+
+# Module description
 
 _Read this in other languages:_ [_English_](./)_,_ [_Русский_](https://github.com/mikopbx/ModuleTemplate/tree/b68ff6f52f842c6f9a3488b15da93992862058be/README.ru.md)_._
 
-## Module description \#\#
-
-You can use this template to make a new extension for MikoPBX. I contains a web UI, with JS, CSS and PHP classes and database.
-
-## Folder structure \#\#
+##  Folder structure
 
 * **app** folder -  for MVC part of project in compliance with the [Phalcon app Structure](https://docs.phalcon.io/3.4/en/tutorial-basic#file-structure)  
 * **bin** folder  - for binary executable files
@@ -18,7 +20,7 @@ You can use this template to make a new extension for MikoPBX. I contains a web 
 * **public** folder  - for public accessible files, i.e. js, css, images
 * **setup** folder - for installation and uninstallation classes, and additional firewall rules
 
-### Prepare template \#\#\#
+## Prepare template
 
 You can use [this bash script](https://github.com/mikopbx/ExtensionsDevTools) to prepare your copy or you may follow the next steps:
 
@@ -34,26 +36,26 @@ You can use [this bash script](https://github.com/mikopbx/ExtensionsDevTools) to
 7. If your future module has to open any firewall ports, describe it at `setup/FirewallRules.php` or just delete this file, if you don't need it.
 8. Modify `module.json`, change module unique ID, developer’s name, version information and update/add functions to install your future module correctly.
 
-### File PbxExtensionSetup.php \#\#\#
+## File PbxExtensionSetup.php
 
 This file must have at least one `function __construct()`.  You can inherit the other function from parent class [PbxExtensionBase](https://github.com/mikopbx/core/blob/master/www/src/modules/PbxExtensionBase.php)
 
-### ORM Models classes \#\#\#
+## ORM Models classes
 
 You must use namespace like `Modules\<ModuleUniqueID>\Models`. Every file has to extend `ModuleBaseClass` In class `ModuleBaseClass` you must have the following method: `getRepresent()`
 
-### Controllers classes \#\#\#
+## Controllers classes
 
 At every controller public method you must specify the module view file template path:  `$this->view->pick( "{$modulesDir}/<ModuleUniqueID>/app/views/index" );`
 
-### Translations \#\#\#
+## Translations
 
 Your module has to have at 1 file e.g.: `en.php` with at least 2 translated phrases being there in the file:
 
 * **Breadcrumb** - Your module name
 * **SubHeader** - Your module description for subheader
 
-### Useful links \#\#\#
+## Useful links
 
 Before creating a new module you may read some docs:
 
@@ -67,7 +69,7 @@ Code style guides:
 * [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 * [PSR-1: Basic Coding Standard](https://www.php-fig.org/psr/psr-1/)
 
-### Questions \#\#\#
+## Questions
 
 You are welcome to our telegram channel for developers [@mikopbx\_dev](https://t.me/joinchat/AAPn5xSqZIpQnNnCAa3bBw)
 
