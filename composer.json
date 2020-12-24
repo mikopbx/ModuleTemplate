@@ -1,0 +1,60 @@
+{
+    "name": "mikopbx/moduletemplate",
+    "description": "ModuleTemplate",
+    "require": {
+        "mikopbx/core": ">=2020.2.757"
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ModuleTemplate\\": "/"
+        }
+    },
+    "type": "application",
+    "keywords": [
+        "pbx",
+        "asterisk",
+        "freepbx",
+        "mikopbx",
+        "sip",
+        "voip",
+        "phalcon",
+        "telephony",
+        "uc"
+    ],
+    "license": "GPL-3.0-or-later",
+    "homepage": "https://github.com/mikopbx/ModuleTemplate",
+    "support": {
+        "email": "help@mikopbx.com",
+        "wiki": "https://wiki.mikopbx.com",
+        "issues": "https://github.com/mikopbx/Core/issues",
+        "source": "https://github.com/mikopbx/Core",
+        "forum": "https://qa.askozia.ru",
+        "chat": "https://t.me/mikopbx_dev"
+    },
+    "authors": [
+        {
+            "name": "Alexey Portnov",
+            "email": "apor@miko.ru",
+            "homepage": "https://www.facebook.com/PortnovAlexey",
+            "role": "Developer"
+        },
+        {
+            "name": "Nikolay Beketov",
+            "email": "nbek@miko.ru",
+            "homepage": "http://facebook.com/jorikfon",
+            "role": "Developer"
+        }
+    ],
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/mikopbx"
+        }
+    ],
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4.6"
+        }
+    }
+}
