@@ -19,6 +19,18 @@ use MikoPBX\Modules\Setup\PbxExtensionSetupBase;
  */
 class PbxExtensionSetup extends PbxExtensionSetupBase
 {
+
+    /**
+     * PbxExtensionSetup constructor.
+     *
+     * @param string $moduleUniqueID - the unique module identifier
+     */
+    public function __construct(string $moduleUniqueID)
+    {
+        parent::__construct($moduleUniqueID);
+
+    }
+
     /**
      * Creates database structure according to models annotations
      *
@@ -37,7 +49,9 @@ class PbxExtensionSetup extends PbxExtensionSetupBase
             $result = $this->registerNewModule();
         }
 
-        $this->addToSidebar();
+        if ($result) {
+            $result = $this->addToSidebar();
+        }
 
         return $result;
     }

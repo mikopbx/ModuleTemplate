@@ -7,10 +7,9 @@
  */
 
 /*
- * https://docs.phalconphp.com/3.4/ru-ru/db-models-metadata
+ * https://docs.phalcon.io/4.0/en/db-models
  *
  */
-
 
 namespace Modules\ModuleTemplate\Models;
 
