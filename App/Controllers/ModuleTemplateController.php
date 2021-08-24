@@ -23,7 +23,7 @@ class ModuleTemplateController extends BaseController
     public function initialize(): void
     {
         $this->moduleDir           = PbxExtensionUtils::getModuleDir($this->moduleUniqueID);
-        $this->view->logoImagePath = "{$this->url->get()}assets/img/cache/{$this->moduleUniqueID}/logo.png";
+        $this->view->logoImagePath = "{$this->url->get()}assets/img/cache/{$this->moduleUniqueID}/logo.svg";
         $this->view->submitMode    = null;
         parent::initialize();
     }
