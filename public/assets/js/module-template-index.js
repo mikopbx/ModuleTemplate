@@ -17,7 +17,7 @@ var ModuleTemplate = {
   $formObj: $('#' + idForm),
   $checkBoxes: $('#' + idForm + ' .ui.checkbox'),
   $dropDowns: $('#' + idForm + ' .ui.dropdown'),
-  saveRecordAJAXUrl: globalRootUrl + idUrl + "/save",
+  saveTableAJAXUrl: globalRootUrl + idUrl + "/saveTableData",
   deleteRecordAJAXUrl: globalRootUrl + idUrl + "/delete",
   $disabilityFields: $('#' + idForm + '  .disability'),
   $statusToggle: $('#module-status-toggle'),
@@ -134,6 +134,9 @@ var ModuleTemplate = {
       sDom: 'rtip',
       deferRender: true,
       pageLength: 17,
+      infoCallback: function infoCallback(settings, start, end, max, total, pre) {
+        return '';
+      },
       language: SemanticLocalization.dataTableLocalisation,
       ordering: false,
 
@@ -373,7 +376,7 @@ var ModuleTemplate = {
 
     $("tr#" + recordId + " .user.circle").removeClass('user circle').addClass('spinner loading');
     $.api({
-      url: window[className].saveRecordAJAXUrl,
+      url: window[className].saveTableAJAXUrl,
       on: 'now',
       method: 'POST',
       data: data,

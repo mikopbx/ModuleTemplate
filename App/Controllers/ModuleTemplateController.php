@@ -128,13 +128,6 @@ class ModuleTemplateController extends BaseController
     public function saveAction() :void
     {
         $data       = $this->request->getPost();
-        $tableName  = $data['pbx-table-id']??'';
-
-        $className = $this->getClassName($tableName);
-        if(!empty($className)){
-            $this->saveTableData($className, $data);
-            return;
-        }
         $record = ModuleTemplate::findFirst();
         if ($record === null) {
             $record = new ModuleTemplate();
@@ -173,8 +166,6 @@ class ModuleTemplateController extends BaseController
         $this->view->success = true;
         $this->db->commit();
     }
-
-
 
     /**
      * Delete phonebook record
@@ -221,11 +212,16 @@ class ModuleTemplateController extends BaseController
 
     /**
      * Обновление данных в таблице.
-     * @param $className
-     * @param $data
      */
-    private function saveTableData($className, $data):void
+    public function saveTableDataAction():void
     {
+        $data       = $this->request->getPost();
+        $tableName  = $data['pbx-table-id']??'';
+
+        $className = $this->getClassName($tableName);
+        if(empty($className)){
+            return;
+        }
         $rowId      = $data['pbx-row-id']??'';
         if(empty($rowId)){
             $this->view->success = false;
