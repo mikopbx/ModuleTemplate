@@ -10,9 +10,6 @@
 namespace Modules\ModuleTemplate\Models;
 
 use MikoPBX\Modules\Models\ModulesModelsBase;
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Uniqueness as UniquenessValidator;
-
 
 /**
  * Class PhoneBook

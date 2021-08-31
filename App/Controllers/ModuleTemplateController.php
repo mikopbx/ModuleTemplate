@@ -90,7 +90,6 @@ class ModuleTemplateController extends BaseController
      */
     public function indexAction(): void
     {
-
         $footerCollection = $this->assets->collection('footerJS');
         $footerCollection->addJs('js/pbx/main/form.js', true);
         $footerCollection->addJs('js/vendor/datatable/dataTables.semanticui.js', true);
