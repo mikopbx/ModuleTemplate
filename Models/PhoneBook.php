@@ -53,6 +53,11 @@ class PhoneBook extends ModulesModelsBase
     public $queueId;
 
     /**
+     * @Column(type="integer", nullable=true)
+     */
+    public ?string $priority = '0';
+
+    /**
      * CallerID - MIKO - Nikolay Beketov
      *
      * @Column(type="string", nullable=true)

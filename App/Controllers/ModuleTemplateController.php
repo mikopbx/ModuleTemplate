@@ -45,16 +45,17 @@ class ModuleTemplateController extends BaseController
         $this->view->recordsFiltered = 0;
         $this->view->data            = [];
 
-        // Список выбора очередей.
-        // $this->view->users  = Sip::find("type = 'friend' AND ( disabled <> '1')");
-
         $descriptions = $this->getTablesDescription();
         if(!isset($descriptions[$table])){
             return;
         }
         $className = $this->getClassName($table);
         if(!empty($className)){
-            $allRecords = $className::find()->toArray();
+            $filter = [];
+            if(isset($descriptions[$table]['cols']['priority'])){
+                $filter = ['order' => 'priority'];
+            }
+            $allRecords = $className::find($filter)->toArray();
             $records    = [];
             $emptyRow   = [
                 'rowIcon'  =>  $descriptions[$table]['cols']['rowIcon']['icon']??'',
@@ -94,6 +95,7 @@ class ModuleTemplateController extends BaseController
         $footerCollection->addJs('js/pbx/main/form.js', true);
         $footerCollection->addJs('js/vendor/datatable/dataTables.semanticui.js', true);
         $footerCollection->addJs("js/cache/{$this->moduleUniqueID}/module-template-index.js", true);
+        $footerCollection->addJs('js/vendor/jquery.tablednd.min.js', true);
 
         $headerCollectionCSS = $this->assets->collection('headerCSS');
         $headerCollectionCSS->addCss("css/cache/{$this->moduleUniqueID}/module-template.css", true);
@@ -204,6 +206,7 @@ class ModuleTemplateController extends BaseController
         $description['PhoneBook'] = [
             'cols' => [
                 'rowIcon'    => ['header' => '',                        'class' => 'collapsing', 'icon' => 'user'],
+                'priority'   => ['header' => '',                        'class' => 'collapsing'],
                 'call_id'    => ['header' => 'Представление абонента',  'class' => 'ten wide'],
                 'number_rep' => ['header' => 'Номер телефона',          'class' => 'four wide'],
                 'queueId'    => ['header' => 'Номер числом',            'class' => 'collapsing', 'select' => 'queues-list'],
@@ -271,5 +274,34 @@ class ModuleTemplateController extends BaseController
             $className = '';
         }
         return $className;
+    }
+
+    /**
+     * Changes rules priority
+     *
+     */
+    public function changePriorityAction(): void
+    {
+        $this->view->disable();
+        $result = true;
+
+        if ( ! $this->request->isPost()) {
+            return;
+        }
+        $priorityTable = $this->request->getPost();
+        $tableName     = $this->request->get('table');
+        $className = $this->getClassName($tableName);
+        if(empty($className)){
+            echo "table not found -- ы$tableName --";
+            return;
+        }
+        $rules = $className::find();
+        foreach ($rules as $rule){
+            if (array_key_exists ( $rule->id, $priorityTable)){
+                $rule->priority = $priorityTable[$rule->id];
+                $result         .= $rule->update();
+            }
+        }
+        echo json_encode($result);
     }
 }

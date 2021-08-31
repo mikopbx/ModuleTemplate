@@ -154,6 +154,11 @@ var ModuleTemplate = {
           } else if (key === 'delButton') {
             var templateDeleteButton = '<div class="ui small basic icon buttons action-buttons">' + '<a href="' + window[className].deleteRecordAJAXUrl + '/' + data.id + '" data-value = "' + data.DT_RowId + '"' + ' class="ui button delete two-steps-delete popuped" data-content="' + globalTranslate.bt_ToolTipDelete + '">' + '<i class="icon trash red"></i></a></div>';
             cols.eq(index).html(templateDeleteButton);
+          } else if (key === 'priority') {
+            cols.eq(index).addClass('dragHandle');
+            cols.eq(index).html('<i class="ui sort circle icon"></i>'); // Приоритет устанавливаем для строки.
+
+            $(row).attr('m-priority', data[key]);
           } else {
             var template = '<div class="ui transparent fluid input inline-edit">' + '<input colName="' + key + '" class="' + inputClassName + '" type="text" data-value="' + data[key] + '" value="' + data[key] + '"></div>';
             $('td', row).eq(index).html(template);
@@ -206,7 +211,7 @@ var ModuleTemplate = {
       var keyCode = e.keyCode || e.which;
 
       if (keyCode === 13 || keyCode === 9 && $(':focus').hasClass('mikopbx-module-input')) {
-        window[className].changeFunc();
+        window[className].endEditInput();
       }
     });
     body.on('click', 'a.delete', function (e) {
@@ -217,9 +222,36 @@ var ModuleTemplate = {
     }); // Добавление новой строки
     // Отправка формы на сервер по уходу с поля ввода
 
-    body.on('focusout', '.' + inputClassName, window[className].changeFunc); // Кнопка "Добавить новую запись"
+    body.on('focusout', '.' + inputClassName, window[className].endEditInput); // Кнопка "Добавить новую запись"
 
     $('[id-table = "' + tableName + '"]').on('click', window[className].addNewRow);
+  },
+
+  /**
+   * Перемещение строки, изменение приоритета.
+   */
+  cbOnDrop: function cbOnDrop(table, row) {
+    var priorityWasChanged = false;
+    var priorityData = {};
+    $(table).find('tr').each(function (index, obj) {
+      var ruleId = $(obj).attr('id');
+      var oldPriority = parseInt($(obj).attr('m-priority'), 10);
+      var newPriority = obj.rowIndex;
+
+      if (!isNaN(ruleId) && oldPriority !== newPriority) {
+        priorityWasChanged = true;
+        priorityData[ruleId] = newPriority;
+      }
+    });
+
+    if (priorityWasChanged) {
+      $.api({
+        on: 'now',
+        url: "".concat(globalRootUrl).concat(idUrl, "/changePriority?table=") + $(table).attr('id').replace('-table', ''),
+        method: 'POST',
+        data: priorityData
+      });
+    }
   },
 
   /**
@@ -278,6 +310,11 @@ var ModuleTemplate = {
     });
     selestGroup.dropdown({
       onChange: window[className].changeGroupInList
+    });
+    $('#' + tableId).tableDnD({
+      onDrop: window[className].cbOnDrop,
+      onDragClass: 'hoveringRow',
+      dragHandle: '.dragHandle'
     });
   },
 

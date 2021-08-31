@@ -151,6 +151,11 @@ const ModuleTemplate = {
 							' class="ui button delete two-steps-delete popuped" data-content="' + globalTranslate.bt_ToolTipDelete + '">' +
 							'<i class="icon trash red"></i></a></div>';
 						cols.eq(index).html(templateDeleteButton);
+					}else if(key === 'priority'){
+						cols.eq(index).addClass('dragHandle')
+						cols.eq(index).html('<i class="ui sort circle icon"></i>');
+						// Приоритет устанавливаем для строки.
+						$(row).attr('m-priority', data[key]);
 					}else{
 						let template = '<div class="ui transparent fluid input inline-edit">' +
 							'<input colName="'+key+'" class="'+inputClassName+'" type="text" data-value="'+data[key] + '" value="' + data[key] + '"></div>';
@@ -195,7 +200,7 @@ const ModuleTemplate = {
 		$(document).on('keydown', function (e) {
 			let keyCode = e.keyCode || e.which;
 			if (keyCode === 13 || keyCode === 9 && $(':focus').hasClass('mikopbx-module-input')) {
-				window[className].changeFunc();
+				window[className].endEditInput();
 			}
 		});
 
@@ -207,10 +212,35 @@ const ModuleTemplate = {
 		}); // Добавление новой строки
 
 		// Отправка формы на сервер по уходу с поля ввода
-		body.on('focusout', '.'+inputClassName, window[className].changeFunc);
+		body.on('focusout', '.'+inputClassName, window[className].endEditInput);
 
 		// Кнопка "Добавить новую запись"
 		$('[id-table = "'+tableName+'"]').on('click', window[className].addNewRow);
+	},
+
+	/**
+	 * Перемещение строки, изменение приоритета.
+	 */
+	cbOnDrop(table, row) {
+		let priorityWasChanged = false;
+		const priorityData = {};
+		$(table).find('tr').each((index, obj) => {
+			const ruleId = $(obj).attr('id');
+			const oldPriority = parseInt($(obj).attr('m-priority'), 10);
+			const newPriority = obj.rowIndex;
+			if (!isNaN( ruleId ) && oldPriority !== newPriority) {
+				priorityWasChanged = true;
+				priorityData[ruleId] = newPriority;
+			}
+		});
+		if (priorityWasChanged) {
+			$.api({
+				on: 'now',
+				url: `${globalRootUrl}${idUrl}/changePriority?table=`+$(table).attr('id').replace('-table', ''),
+				method: 'POST',
+				data: priorityData,
+			});
+		}
 	},
 
 	/**
@@ -266,6 +296,12 @@ const ModuleTemplate = {
 		});
 		selestGroup.dropdown({
 			onChange: window[className].changeGroupInList,
+		});
+
+		$('#' + tableId).tableDnD({
+			onDrop: window[className].cbOnDrop,
+			onDragClass: 'hoveringRow',
+			dragHandle: '.dragHandle',
 		});
 	},
 	/**
