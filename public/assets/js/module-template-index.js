@@ -61,6 +61,7 @@ var ModuleTemplate = {
     window[className].checkStatusToggle();
     window.addEventListener('ModuleStatusChanged', window[className].checkStatusToggle);
     window[className].initializeForm();
+    $('.menu .item').tab();
     $.get(idUrl + '/getTablesDescription', function (result) {
       for (var key in result['data']) {
         var tableName = key + '-table';

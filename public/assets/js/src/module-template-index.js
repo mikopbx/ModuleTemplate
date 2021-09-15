@@ -63,7 +63,7 @@ const ModuleTemplate = {
 		window[className].checkStatusToggle();
 		window.addEventListener('ModuleStatusChanged', window[className].checkStatusToggle);
 		window[className].initializeForm();
-
+		$('.menu .item').tab();
 		$.get( idUrl + '/getTablesDescription', function( result ) {
 			for (let key in result['data']) {
 				let tableName = key + '-table';

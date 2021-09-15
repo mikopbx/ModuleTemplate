@@ -12,6 +12,7 @@ return [
 	'mo_ModuleModuleTemplate' => 'Module template',
     'BreadcrumbModuleTemplate'=> 'Template module',
     'SubHeaderModuleTemplate' => 'Example to create own modules',
+    'module_template_AddNewRecord'  => 'Add new',
     'mod_tpl_TextFieldLabel'        => 'Text field example',
     'mod_tpl_TextAreaFieldLabel'    => 'TextArea field example',
     'mod_tpl_PasswordFieldLabel'    => 'Password field example',

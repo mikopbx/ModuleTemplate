@@ -2,7 +2,7 @@
 <div class="ui grid">
     <div class="ui row">
         <div class="ui five wide column">
-            {{ link_to("#", '<i class="add user icon"></i>  '~t._('module_phnbk_AddNewRecord'), "class": "ui blue button", "id":"add-new-row", "id-table":"PhoneBook-table") }}
+            {{ link_to("#", '<i class="add user icon"></i>  '~t._('module_template_AddNewRecord'), "class": "ui blue button", "id":"add-new-row", "id-table":"PhoneBook-table") }}
         </div>
     </div>
 </div>
