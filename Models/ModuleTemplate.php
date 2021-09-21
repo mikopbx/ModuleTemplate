@@ -90,22 +90,22 @@ class ModuleTemplate extends ModulesModelsBase
      */
     public static function getDynamicRelations(&$calledModelObject): void
     {
-        if (is_a($calledModelObject, Providers::class)) {
-            $calledModelObject->belongsTo(
-                'id',
-                ModuleTemplate::class,
-                'dropdown_field',
-                [
-                    'alias'      => 'ModuleTemplateProvider',
-                    'foreignKey' => [
-                        'allowNulls' => 0,
-                        'message'    => 'Models\ModuleTemplateProvider',
-                        'action'     => Relation::ACTION_RESTRICT
-                        // запретить удалять провайдера если есть ссылки в модуле
-                    ],
-                ]
-            );
-        }
+//        if (is_a($calledModelObject, Providers::class)) {
+//            $calledModelObject->belongsTo(
+//                'id',
+//                ModuleTemplate::class,
+//                'dropdown_field',
+//                [
+//                    'alias'      => 'ModuleTemplateProvider',
+//                    'foreignKey' => [
+//                        'allowNulls' => 0,
+//                        'message'    => 'Models\ModuleTemplateProvider',
+//                        'action'     => Relation::ACTION_RESTRICT
+//                        // запретить удалять провайдера если есть ссылки в модуле
+//                    ],
+//                ]
+//            );
+//        }
     }
 
     public function initialize(): void

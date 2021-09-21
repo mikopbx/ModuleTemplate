@@ -12,6 +12,7 @@ return [
 	'mo_ModuleModuleTemplate'   => 'Модуль шаблон',
     'BreadcrumbModuleTemplate'  => 'Шаблонный модуль',
     'SubHeaderModuleTemplate'   => 'Пример для создания собственных модулей',
+    'module_template_AddNewRecord'  => 'Добавить',
     'mod_tpl_TextFieldLabel'        => 'Пример текстового поля',
     'mod_tpl_TextAreaFieldLabel'    => 'Пример многостраничного поля',
     'mod_tpl_PasswordFieldLabel'    => 'Пример поля с паролем',

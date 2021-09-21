@@ -1,3 +1,33 @@
+
+<div class="ui grid">
+    <div class="ui row">
+        <div class="ui five wide column">
+            {{ link_to("#", '<i class="add user icon"></i>  '~t._('module_template_AddNewRecord'), "class": "ui blue button", "id":"add-new-row", "id-table":"PhoneBook-table") }}
+        </div>
+    </div>
+</div>
+<br>
+<table id="PhoneBook-table" class="ui small very compact single line table"></table>
+
+<select id="queues-list" style="display: none;">
+    {% for record in queues %}
+        <option value="{{ record.id }}">{{ record.name }}</option>
+    {% endfor %}
+</select>
+
+<select id="users-list" style="display: none;">
+    {% for record in users %}
+        <option value="{{ record.number }}">{{ record.callerid }}</option>
+    {% endfor %}
+</select>
+
+<div id="template-select" style="display: none;">
+    <div class="ui dropdown select-group" data-value="PARAM">
+        <div class="text">PARAM</div>
+        <i class="dropdown icon"></i>
+    </div>
+</div>
+
 <form class="ui large grey segment form" id="module-template-form">
     <div class="ui ribbon label">
         <i class="phone icon"></i> 123456
