@@ -30,7 +30,7 @@ const ModuleTemplate = {
 			rules: [
 				{
 					type: 'empty',
-					prompt: globalTranslate.mod_tplValidateValueIsEmpty,
+					prompt: globalTranslate.mod_tpl_ValidateValueIsEmpty,
 				},
 			],
 		},
@@ -39,7 +39,7 @@ const ModuleTemplate = {
 			rules: [
 				{
 					type: 'empty',
-					prompt: globalTranslate.mod_tplValidateValueIsEmpty,
+					prompt: globalTranslate.mod_tpl_ValidateValueIsEmpty,
 				},
 			],
 		},
@@ -48,7 +48,7 @@ const ModuleTemplate = {
 			rules: [
 				{
 					type: 'empty',
-					prompt: globalTranslate.mod_tplValidateValueIsEmpty,
+					prompt: globalTranslate.mod_tpl_ValidateValueIsEmpty,
 				},
 			],
 		},
