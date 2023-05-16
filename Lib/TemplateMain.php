@@ -37,7 +37,7 @@ class TemplateMain extends PbxExtensionBase
     /**
      * Check something and answer over RestAPI
      *
-     * @return PBXApiResult
+     * @return PBXApiResult An object containing the result of the API call.
      */
     public function checkModuleWorkProperly(): PBXApiResult
     {
