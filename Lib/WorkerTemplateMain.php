@@ -1,4 +1,22 @@
 <?php
+/*
+ * MikoPBX - free phone system for small business
+ * Copyright © 2017-2023 Alexey Portnov and Nikolay Beketov
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 namespace Modules\ModuleTemplate\Lib;
 
 
@@ -9,16 +27,20 @@ use MikoPBX\Core\Workers\WorkerBase;
 
 require_once 'Globals.php';
 
+/**
+ * Class ModuleTemplate
+ */
 class WorkerTemplateMain extends WorkerBase
 {
     protected TemplateMain $templateMain;
 
     /**
-     * Worker start point
+     * Start point for the worker.
      *
-     * @param $argv
+     * @param array $argv The command line arguments.
+     * @return void
      */
-    public function start($argv): void
+    public function start(array $argv): void
     {
         $this->templateMain = new TemplateMain();
         $client = new BeanstalkClient(self::class);
@@ -34,7 +56,7 @@ class WorkerTemplateMain extends WorkerBase
      *
      * @param BeanstalkClient $message
      */
-    public function beanstalkCallback($message): void
+    public function beanstalkCallback(BeanstalkClient $message): void
     {
         $receivedMessage = json_decode($message->getBody(), true);
         $this->templateMain->processBeanstalkMessage($receivedMessage);
