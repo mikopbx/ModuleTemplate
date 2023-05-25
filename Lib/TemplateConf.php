@@ -17,14 +17,6 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Copyright © MIKO LLC - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Alexey Portnov, 12 2019
- */
-
-
 namespace Modules\ModuleTemplate\Lib;
 
 use MikoPBX\AdminCabinet\Forms\ExtensionEditForm;
@@ -202,7 +194,7 @@ class TemplateConf extends ConfigClass
             'iconclass'=>'',
             'submenu'=>[
                 '/module-template/additional-page'=>[
-                    'caption' => 'mod_tpl_AdditionalMenuItem',
+                    'caption' => 'mod_tpl_AdditionalSubMenuItem',
                     'iconclass' => 'gear',
                     'action' => 'index',
                     'param' => '',

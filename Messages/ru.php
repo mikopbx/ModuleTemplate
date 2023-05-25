@@ -17,14 +17,6 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Copyright (C) MIKO LLC - All Rights Reserved
- * Unauthorized copying of this file, via any medium is strictly prohibited
- * Proprietary and confidential
- * Written by Nikolay Beketov, 6 2018
- *
- */
-
 return [
 	'repModuleTemplate'         => 'Модуль шаблон - %repesent%',
 	'mo_ModuleModuleTemplate'   => 'Модуль шаблон',
@@ -49,5 +41,6 @@ return [
     'mod_tpl_AccountDepartment'     => 'Бухгалтерия',
     'mod_tpl_AdditionalTabContent'  => 'Эта вкладка сгенерирована из Шаблонного модуля',
     'mod_tpl_AdditionalMenuItem'    => 'Пример дополнительного пункта меню',
+    'mod_tpl_AdditionalSubMenuItem' => 'Пример подменю с отдельной страницей'
 
 ];
