@@ -19,15 +19,10 @@
 
 namespace Modules\ModuleTemplate\Lib;
 
-use MikoPBX\AdminCabinet\Forms\ExtensionEditForm;
 use MikoPBX\Common\Models\PbxSettings;
 use MikoPBX\Core\Workers\Cron\WorkerSafeScriptsCore;
 use MikoPBX\Modules\Config\ConfigClass;
 use MikoPBX\PBXCoreREST\Lib\PBXApiResult;
-use Phalcon\Forms\Element\Select;
-use Phalcon\Forms\Form;
-use Phalcon\Mvc\Controller;
-use Phalcon\Mvc\View;
 
 class TemplateConf extends ConfigClass
 {
@@ -98,86 +93,6 @@ class TemplateConf extends ConfigClass
         return $res;
     }
 
-    /**
-     * Prepares the include block within a Volt template.
-     * @see https://docs.mikopbx.com/mikopbx-development/module-developement/module-class#onvoltblockcompile
-     *
-     * @param string $controller The called controller name.
-     * @param string $blockName The named in volt template block name.
-     * @param View $view The view instance.
-     *
-     * @return string the volt partial file path without extension.
-     */
-    public function onVoltBlockCompile(string $controller, string $blockName, View $view):string
-    {
-        $result = '';
-        if ($controller==='Extensions'){
-            switch ($blockName){
-                case "GeneralTabFields":
-                    $result = "{$this->moduleDir}/App/Views/Extensions/GeneralTabFields";
-                    break;
-                case "AdditionalTab":
-                    $result = "{$this->moduleDir}/App/Views/Extensions/AdditionalTab";
-                    break;
-                default:
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * Called from BaseForm before the form is initialized.
-     * @see https://docs.mikopbx.com/mikopbx-development/module-developement/module-class#onbeforeforminitialize
-     *
-     * @param Form $form The called form instance.
-     * @param mixed $entity The called form entity.
-     * @param mixed $options The called form options.
-     *
-     * @return void
-     */
-    public function onBeforeFormInitialize(Form $form, $entity, $options):void
-    {
-        if (is_a($form, ExtensionEditForm::class)) {
-            // Prepare groups for select
-            $arrGroupsForSelect = [
-                'sales' => $this->translation->_('mod_tpl_SalesDepartment'),
-                'support' => $this->translation->_('mod_tpl_SupportDepartment'),
-                'hr' => $this->translation->_('mod_tpl_HRDepartment'),
-                'accounts' => $this->translation->_('mod_tpl_AccountDepartment'),
-            ];
-
-            $groupForSelect = new Select(
-                'mod_tpl_select_group', $arrGroupsForSelect, [
-                    'using'    => [
-                        'id',
-                        'name',
-                    ],
-                    //'value' => $userGroupId,
-                    'useEmpty' => false,
-                    'class'    => 'ui selection dropdown search select-group-field',
-                ]
-            );
-
-            // Add the group select field to the form
-            $form->add($groupForSelect);
-
-            // Look at onAfterExecuteRoute to understand how it save into DB
-        }
-    }
-
-    /**
-     * Calls from BaseController on afterExecuteRoute function
-     *
-     * @param Controller $controller
-     * @return void
-     */
-    public function onAfterExecuteRoute(Controller $controller):void
-    {
-        $userGroup = $controller->request->getPost('mod_tpl_select_group');
-        $userId = $controller->request->getPost('user_id');
-        // Add an extra code to save it into DB
-    }
 
     /**
      * Modifies the system menu.
@@ -189,12 +104,12 @@ class TemplateConf extends ConfigClass
      */
     public function onBeforeHeaderMenuShow(array &$menuItems):void
     {
-        $menuItems['mod_tpl_AdditionalMenuItem']=[
-            'caption'=>'mod_tpl_AdditionalMenuItem',
+        $menuItems['module_template_AdditionalMenuItem']=[
+            'caption'=>'module_template_AdditionalMenuItem',
             'iconclass'=>'',
             'submenu'=>[
                 '/module-template/additional-page'=>[
-                    'caption' => 'mod_tpl_AdditionalSubMenuItem',
+                    'caption' => 'module_template_AdditionalSubMenuItem',
                     'iconclass' => 'gear',
                     'action' => 'index',
                     'param' => '',
@@ -203,5 +118,4 @@ class TemplateConf extends ConfigClass
             ]
         ];
     }
-
 }

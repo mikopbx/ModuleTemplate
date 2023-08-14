@@ -22,7 +22,6 @@ namespace Modules\ModuleTemplate\Lib;
 
 use MikoPBX\Core\System\BeanstalkClient;
 use MikoPBX\Core\System\Util;
-use Error;
 use MikoPBX\Core\Workers\WorkerBase;
 
 require_once 'Globals.php';

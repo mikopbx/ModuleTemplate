@@ -19,8 +19,6 @@
 
 namespace Modules\ModuleTemplate\App;
 
-use Modules\ModuleTemplate\App\Providers\ViewProvider;
-use Modules\ModuleTemplate\App\Providers\VoltProvider;
 use Phalcon\Di\DiInterface;
 use Phalcon\Events\Manager;
 use Phalcon\Mvc\Dispatcher;
@@ -44,16 +42,13 @@ class Module implements ModuleDefinitionInterface
      * @param \Phalcon\Di\DiInterface $container
      */
     public function registerServices(DiInterface $container){
-        $container->register(new ViewProvider());
-        $container->register(new VoltProvider());
-
         $container->set('dispatcher', function () {
             $dispatcher = new Dispatcher();
 
             $eventManager = new Manager();
 
             $dispatcher->setEventsManager($eventManager);
-            $dispatcher->setDefaultNamespace('Modules\ModuleUsersUI\App\Controllers\\');
+            $dispatcher->setDefaultNamespace('Modules\ModuleTemplate\App\Controllers\\');
             return $dispatcher;
         });
     }

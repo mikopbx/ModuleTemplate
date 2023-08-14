@@ -22,14 +22,11 @@ namespace Modules\ModuleTemplate\Lib;
 use MikoPBX\Core\System\Util;
 use MikoPBX\Core\Workers\WorkerBase;
 use MikoPBX\Core\Asterisk\AsteriskManager;
-use Error;
-
 require_once 'Globals.php';
 
 
 /**
-
-Worker class for Template AMI.
+ * Worker class for Template AMI.
  */
 class WorkerTemplateAMI extends WorkerBase
 {
@@ -94,7 +91,6 @@ class WorkerTemplateAMI extends WorkerBase
     }
 
 }
-
 
 // Start worker process
 $workerClassname = WorkerTemplateAMI::class;

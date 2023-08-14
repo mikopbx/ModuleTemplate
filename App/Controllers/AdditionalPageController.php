@@ -21,18 +21,12 @@
 namespace Modules\ModuleTemplate\App\Controllers;
 
 use MikoPBX\AdminCabinet\Controllers\BaseController;
-use MikoPBX\Common\Models\CallQueues;
-use MikoPBX\Common\Models\Extensions;
 use MikoPBX\Modules\PbxExtensionUtils;
-use Modules\ModuleTemplate\App\Forms\ModuleTemplateForm;
-use Modules\ModuleTemplate\Models\ModuleTemplate;
-use MikoPBX\Common\Models\Providers;
-use Modules\ModuleTemplate\Models\PhoneBook;
 
 class AdditionalPageController extends BaseController
 {
-    private $moduleUniqueID = 'ModuleTemplate';
-    private $moduleDir;
+    private string $moduleUniqueID = 'ModuleTemplate';
+    private string $moduleDir;
 
     /**
      * Basic initial class
@@ -40,7 +34,7 @@ class AdditionalPageController extends BaseController
     public function initialize(): void
     {
         $this->moduleDir = PbxExtensionUtils::getModuleDir($this->moduleUniqueID);
-        $this->view->logoImagePath = "{$this->url->get()}assets/img/cache/{$this->moduleUniqueID}/logo.svg";
+        $this->view->logoImagePath = $this->url->get().'assets/img/cache/'.$this->moduleUniqueID.'/logo.svg';
         $this->view->submitMode = null;
         parent::initialize();
     }
@@ -50,7 +44,7 @@ class AdditionalPageController extends BaseController
      */
     public function indexAction(): void
     {
-        $this->view->pick("{$this->moduleDir}/App/Views/AdditionalPage/index");
+        $this->view->pick('Modules/'.$this->moduleUniqueID.'/AdditionalPage/index');
     }
 
 }

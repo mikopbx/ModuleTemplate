@@ -19,17 +19,15 @@
 
 namespace Modules\ModuleTemplate\App\Forms;
 
-use Phalcon\Forms\Form;
+use MikoPBX\AdminCabinet\Forms\BaseForm;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\Numeric;
 use Phalcon\Forms\Element\Password;
 use Phalcon\Forms\Element\Check;
-use Phalcon\Forms\Element\TextArea;
 use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Select;
 
-
-class ModuleTemplateForm extends Form
+class ModuleTemplateForm extends BaseForm
 {
 
     public function initialize($entity = null, $options = null) :void
@@ -42,8 +40,9 @@ class ModuleTemplateForm extends Form
         $this->add(new Text('text_field'));
 
         // text_area_field
-        $rows = max(round(strlen($entity->text_area_field) / 95), 2);
-        $this->add(new TextArea('text_area_field', ['rows' => $rows]));
+        $this->addTextArea('text_area_field',$entity->text_area_field??'',90,
+            ['placeholder' => 'There is placeholder text']
+        );
 
         // password_field
         $this->add(new Password('password_field'));
@@ -54,7 +53,6 @@ class ModuleTemplateForm extends Form
             'style'        => 'width: 80px;',
             'defaultValue' => 3,
         ]));
-
 
         // checkbox_field
         $checkAr = ['value' => null];
