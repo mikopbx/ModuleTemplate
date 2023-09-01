@@ -30,7 +30,6 @@ return [
     'module_template_ToggleFieldLabel' => 'Toggle',
     'module_template_DropDownFieldLabel' => 'Dropdown menu',
     'module_template_ValidateValueIsEmpty' => 'Check the field, it looks like empty',
-    'module_template_Disconnected' => 'Module disconnected',
     'module_template_AdditionalMenuItem' => 'template module',
     'module_template_AdditionalTabContent' => 'The module can contain several different pages, if desired, they can be added to the menu',
     'module_template_AdditionalSubMenuItem' => 'Example of a submenu with a separate page',
