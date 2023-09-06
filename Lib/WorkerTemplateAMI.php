@@ -1,25 +1,46 @@
 <?php
+/*
+ * MikoPBX - free phone system for small business
+ * Copyright © 2017-2023 Alexey Portnov and Nikolay Beketov
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with this program.
+ * If not, see <https://www.gnu.org/licenses/>.
+ */
+
 namespace Modules\ModuleTemplate\Lib;
 
+use MikoPBX\Common\Handlers\CriticalErrorsHandler;
+use MikoPBX\Core\Asterisk\AsteriskManager;
 use MikoPBX\Core\System\Util;
 use MikoPBX\Core\Workers\WorkerBase;
-use MikoPBX\Core\Asterisk\AsteriskManager;
-use Error;
 
 require_once 'Globals.php';
 
 
+/**
+ * Worker class for Template AMI.
+ */
 class WorkerTemplateAMI extends WorkerBase
 {
     protected AsteriskManager $am;
     protected TemplateMain $templateMain;
 
     /**
-     * Старт работы листнера.
-     *
-     * @param $argv
+     * Starts the listener work.
+     * @param array $argv The command line arguments.
+     * @return void
      */
-    public function start($argv): void
+    public function start(array $argv): void
     {
         $this->templateMain = new TemplateMain();
         $this->am = Util::getAstManager();
@@ -28,7 +49,7 @@ class WorkerTemplateAMI extends WorkerBase
         while (true) {
             $result = $this->am->waitUserEvent(true);
             if ($result === []) {
-                // Need reconnect to Asterisk AMI
+                // Need to reconnect to Asterisk AMI
                 usleep(100000);
                 $this->am = Util::getAstManager();
                 $this->setFilter();
@@ -73,7 +94,6 @@ class WorkerTemplateAMI extends WorkerBase
 
 }
 
-
 // Start worker process
 $workerClassname = WorkerTemplateAMI::class;
 if (isset($argv) && count($argv) > 1) {
@@ -82,8 +102,6 @@ if (isset($argv) && count($argv) > 1) {
         $worker = new $workerClassname();
         $worker->start($argv);
     } catch (\Throwable $e) {
-        global $errorLogger;
-        $errorLogger->captureException($e);
-        Util::sysLogMsg("{$workerClassname}_EXCEPTION", $e->getMessage(), LOG_ERR);
+        CriticalErrorsHandler::handleExceptionWithSyslog($e);
     }
 }
