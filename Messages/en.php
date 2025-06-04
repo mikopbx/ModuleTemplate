@@ -17,10 +17,10 @@ return [
  * You should have received a copy of the GNU General Public License along with this program.
  * If not, see <https://www.gnu.org/licenses/>.
  */
-    'repModuleTemplate' => 'Module template - %repesent%',
+    'repModuleTemplate' => 'Module amoCRM - %repesent%',
     'mo_ModuleModuleTemplate' => 'Module template',
     'BreadcrumbModuleTemplate' => 'Template module',
-    'SubHeaderModuleTemplate' => 'Example to create own modules',
+    'SubHeaderModuleTemplate' => 'Example for creating your own modules',
     'module_template_AddNewRecord' => 'Add new',
     'module_template_TextFieldLabel' => 'Text field example',
     'module_template_TextAreaFieldLabel' => 'TextArea field example',
